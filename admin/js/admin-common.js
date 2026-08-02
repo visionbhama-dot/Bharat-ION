@@ -110,6 +110,7 @@
     var host = document.querySelector('[data-sidebar]');
     if (!host) return;
     var current = (location.pathname.split('/').pop() || 'index.html');
+    if (current === '' || current === 'admin') current = 'index.html';
     var co = CFG.company || {};
     var links = NAV.map(function (n) {
       return el('a', { href: n.href, class: current === n.href ? 'active' : '' }, [
