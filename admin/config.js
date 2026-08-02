@@ -41,11 +41,14 @@ window.ADMIN_CONFIG = {
      Python/Flask app, so it runs separately from this static site.
      - Locally: run quote-app/run.bat (Windows) or `python3 app.py`, then it
        serves at http://localhost:5000 (default below).
-     - Hosted: if you deploy it (Render, Railway, PythonAnywhere, a VPS, etc.),
-       put its public URL here and the admin "Launch" button will open it.        */
+     - Hosted: after deploying with the included render.yaml, Render gives you a
+       URL like  https://bharation-quotation.onrender.com  — paste it below and
+       the admin "Launch" button will open it. (See DEPLOYMENT.md.)                */
   quoteApp: {
+    // For local use keep localhost; after deploying to Render, replace with your
+    // Render URL, e.g. "https://bharation-quotation.onrender.com"
     url: "http://localhost:5000",
-    startHint: "Start it by running quote-app/run.bat (Windows) or 'python3 app.py' inside the quote-app folder."
+    startHint: "Locally: run quote-app/run.bat (Windows) or 'python3 app.py'. Hosted: set this to your Render URL."
   },
 
   /* ---- Optional backend API ----
