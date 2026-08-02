@@ -36,6 +36,18 @@ window.ADMIN_CONFIG = {
     passcode: "bharat@2026"
   },
 
+  /* ---- Quotation Generator (the Flask "quote-app" in this repo) ----
+     The quote-app produces the professional, locked 6-page A4 PDF. It is a
+     Python/Flask app, so it runs separately from this static site.
+     - Locally: run quote-app/run.bat (Windows) or `python3 app.py`, then it
+       serves at http://localhost:5000 (default below).
+     - Hosted: if you deploy it (Render, Railway, PythonAnywhere, a VPS, etc.),
+       put its public URL here and the admin "Launch" button will open it.        */
+  quoteApp: {
+    url: "http://localhost:5000",
+    startHint: "Start it by running quote-app/run.bat (Windows) or 'python3 app.py' inside the quote-app folder."
+  },
+
   /* ---- Optional backend API ----
      If you host the backend (your separate repo / "quote-app"),
      put its base URL here, e.g. "https://api.yourdomain.com".

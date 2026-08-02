@@ -11,7 +11,7 @@ passcode set in `config.js`.
 | Tool | File | What it does |
 |------|------|--------------|
 | **Dashboard** | `index.html` | Overview + recent quotations / drafts |
-| **Quotation Maker** | `quotation.html` | Build GST-ready quotations, print / save as PDF, save & reload |
+| **Quotation Maker** | `quotation.html` | Launches the `quote-app` PDF generator; also has a quick in-browser quote (print / save as PDF, save & reload) |
 | **Blog Composer** | `blog.html` | Write posts and generate a ready-to-publish HTML file matching the site, plus card + sitemap snippets |
 | **Image Manager** | `images.html` | Preview every image slot and prepare correctly-named files (logo, favicon, banners, product photos) |
 
@@ -28,26 +28,42 @@ Edit `admin/config.js` to change:
   > This is a *soft* client-side gate only. For real protection use your backend.
 - **Product catalogue** — used by the quotation & blog tools.
 
-## Connecting your backend (optional)
+## The Quotation Generator — `quote-app/`
 
-You mentioned you already have a backend (in a separate repo / a `quote-app`
-folder). To use it, set `apiBaseUrl` in `config.js`:
+The professional, locked **6-page A4 PDF** quotation is produced by the Flask
+app in the repo's `quote-app/` folder (WeasyPrint + pikepdf). It is a Python
+server, so it runs **separately** from this static website.
 
-```js
-apiBaseUrl: "https://api.your-domain.com"
-```
+**Run it locally**
+- Windows: double-click `quote-app/run.bat` (installs deps on first run).
+- Mac/Linux: `cd quote-app && pip install -r requirements.txt && python3 app.py`
+- It serves at `http://localhost:5000`.
 
-When set, the tools also call these endpoints (in addition to working locally):
+**Use it from the admin panel**
+- Open **Quotation Maker** and click **Open Quotation Generator** — it opens the
+  address in `config.js` → `quoteApp.url` (default `http://localhost:5000`).
+
+**Host it (so it's available without your PC)**
+Deploy `quote-app/` to any Python host (Render, Railway, PythonAnywhere, a VPS…)
+and put its public URL in `config.js` → `quoteApp.url`. That's the only change
+needed here.
+
+> Note: a page served over **https** can't embed an **http://localhost** page in
+> an iframe (browser mixed-content rule), which is why the admin *opens* the
+> generator in a new tab instead of embedding it.
+
+## Optional generic backend (`apiBaseUrl`)
+
+Independently of the quote-app, you can point the tools at a JSON/upload API by
+setting `apiBaseUrl` in `config.js`. When set, they also call:
 
 | Action | Request |
 |--------|---------|
-| Save a quotation | `POST {apiBaseUrl}/quotations` — JSON body |
+| Save a quotation (quick tool) | `POST {apiBaseUrl}/quotations` — JSON body |
 | Save a blog post | `POST {apiBaseUrl}/blog` — JSON `{ post, html }` |
 | Upload an image | `POST {apiBaseUrl}/upload` — `multipart/form-data`, fields `file` and `slot` |
 
-If your backend uses different routes, tell me the API contract (or share the
-`quote-app` folder in this repo) and I'll wire the calls to match exactly. The
-endpoint names above are placeholders chosen to be easy to implement.
+Leave it `""` to run fully offline in the browser.
 
 ## Publishing blog posts (static workflow)
 

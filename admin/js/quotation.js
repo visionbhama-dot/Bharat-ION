@@ -178,6 +178,18 @@
 
   /* ---------- init ---------- */
   document.addEventListener('DOMContentLoaded', function () {
+    // quote-app launcher
+    var qa = (CFG.quoteApp) || {};
+    var qaUrl = qa.url || '';
+    var lbl = $('quoteAppUrlLbl'), hint = $('quoteAppHint'), launch = $('btnLaunchQuoteApp');
+    if (lbl) lbl.textContent = qaUrl ? ('Opens: ' + qaUrl) : '';
+    if (hint) hint.innerHTML = 'Not opening? The generator must be running first. ' +
+      A.esc(qa.startHint || '') + ' You can change its address in <code>admin/config.js</code>.';
+    if (launch) launch.addEventListener('click', function () {
+      if (!qaUrl) { A.toast('Set quoteApp.url in config.js', 'err'); return; }
+      window.open(qaUrl, '_blank', 'noopener');
+    });
+
     // product dropdown
     var pick = $('prodPick');
     (CFG.products || []).forEach(function (p) { pick.appendChild(A.el('option', { value: p.slug, text: p.name })); });
