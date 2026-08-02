@@ -143,28 +143,28 @@ html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 body{font-family:'Inter',Arial,sans-serif;color:[[INK]];font-size:10pt;line-height:1.5}
 h1,h2,h3,h4,.pop{font-family:'Poppins',Arial,sans-serif}
 /* content area = page margins; header/footer/border live in the margins and REPEAT on every page */
-@page{size:A4;margin:36mm 15mm 22mm 15mm;
-  @top-center{content:element(hdr);vertical-align:middle}
-  @bottom-center{content:element(ftr);vertical-align:middle}}
+@page{size:A4;margin:36mm 15mm 26mm 15mm;
+  @top-center{content:element(hdr);vertical-align:top}
+  @bottom-center{content:element(ftr);vertical-align:bottom}}
 .section{page-break-before:always}
 .section:first-of-type{page-break-before:auto}
 
 /* decorative border (fixed -> repeats on every page) */
-.frame{position:fixed;top:-30mm;left:-9mm;right:-9mm;bottom:-16mm;border:2px solid [[NAVY]];border-radius:6px;z-index:1;pointer-events:none}
+.frame{position:fixed;top:-30mm;left:-9mm;right:-9mm;bottom:-20mm;border:2px solid [[NAVY]];border-radius:6px;z-index:1;pointer-events:none}
 .frame:before{content:"";position:absolute;top:3px;left:3px;right:3px;bottom:3px;border:1px solid [[GOLD]];border-radius:4px}
 
 /* header -> runs in the @top-center margin box on every page */
-.hd{position:running(hdr)}
+.hd{position:running(hdr);padding-top:10mm}
 .hd .hd-row{display:flex;align-items:center;gap:16px}
-.hd .r{flex:1;text-align:right;font-size:7.6pt;color:[[MUTED]];line-height:1.5;border-left:2px solid [[LINE]];padding-left:16px}
+.hd .r{flex:1;text-align:right;font-size:7.6pt;color:[[MUTED]];line-height:1.5}
 .hd .r b{color:[[NAVY]]}
 .hd .gst{margin-top:4px;font-weight:700;color:[[NAVY]];font-size:7.8pt}
-.hdbar{height:3px;background:linear-gradient(90deg,[[GREEN]],[[BLUE]] 45%,[[NAVY]] 70%,[[RED]]);margin:7px -9mm 0}
+.hdbar{height:3px;border-radius:2px;background:linear-gradient(90deg,[[GREEN]],[[BLUE]] 45%,[[NAVY]] 70%,[[RED]]);margin:9px 0 0}
 
 /* footer */
-.ft{position:running(ftr)}
-.ftbar{height:3px;background:linear-gradient(90deg,[[RED]],[[NAVY]] 30%,[[BLUE]] 60%,[[GREEN]]);margin:0 -9mm}
-.ft .in{background:[[NAVY]];color:#d7e3f5;padding:3.5mm 9mm;font-size:7.4pt;display:flex;justify-content:space-between;gap:10px;align-items:center;margin:0 -9mm}
+.ft{position:running(ftr);padding-bottom:10mm}
+.ftbar{height:3px;border-radius:2px 2px 0 0;background:linear-gradient(90deg,[[RED]],[[NAVY]] 30%,[[BLUE]] 60%,[[GREEN]]);margin:0}
+.ft .in{background:[[NAVY]];color:#d7e3f5;padding:3mm 9mm;font-size:7.4pt;display:flex;justify-content:space-between;gap:10px;align-items:center;margin:0;border-radius:0 0 5px 5px}
 .ft .in b{color:#fff}
 .pageno{color:#9fb6d8}
 

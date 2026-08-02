@@ -33,7 +33,7 @@ window.ADMIN_CONFIG = {
      Leave passcode empty ("") to disable the gate. For real
      protection, use your backend authentication.                     */
   auth: {
-    passcode: "bharat@2026"
+    passcode: "BIS@2026"
   },
 
   /* ---- Quotation Generator (the Flask "quote-app" in this repo) ----
@@ -45,10 +45,8 @@ window.ADMIN_CONFIG = {
        URL like  https://bharation-quotation.onrender.com  — paste it below and
        the admin "Launch" button will open it. (See DEPLOYMENT.md.)                */
   quoteApp: {
-    // For local use keep localhost; after deploying to Render, replace with your
-    // Render URL, e.g. "https://bharation-quotation.onrender.com"
-    url: "http://localhost:5000",
-    startHint: "Locally: run quote-app/run.bat (Windows) or 'python3 app.py'. Hosted: set this to your Render URL."
+    url: "https://bharation-quotation.onrender.com",
+    startHint: "Hosted on Render. (Locally you can also run quote-app/run.bat or 'python3 app.py'.)"
   },
 
   /* ---- Optional backend API ----
