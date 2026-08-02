@@ -13,11 +13,31 @@
     <div><b>Bharat iON Systems</b><small>Quotation Generator</small></div>
   </div>
   <div class="actions">
+    <button type="button" class="btn ghost" id="btnSaved">Saved (0)</button>
+    <button type="button" class="btn ghost" id="btnSaveDraft">Save draft</button>
     <label class="chk"><input type="checkbox" name="flatten" form="qform"> Extra-lock (flatten)</label>
     <button type="submit" form="qform" formaction="/preview" formtarget="_blank" class="btn ghost">Preview</button>
     <button type="submit" form="qform" formaction="/generate" class="btn primary">Download Locked PDF</button>
   </div>
 </header>
+
+<!-- Saved quotations drawer -->
+<div id="savedDrawer" class="drawer" hidden>
+  <div class="drawer-bg"></div>
+  <aside class="drawer-panel">
+    <div class="drawer-head">
+      <h3>Saved quotations</h3>
+      <button type="button" id="drawerClose" class="x" aria-label="Close">&times;</button>
+    </div>
+    <p class="hint" style="padding:0 16px">Saved in this browser. Use <b>Export backup</b> to move them to another device.</p>
+    <div class="drawer-tools">
+      <button type="button" class="btn small" id="btnNewQuote">+ New blank</button>
+      <button type="button" class="btn ghost sm" id="btnExportAll">Export backup</button>
+      <label class="btn ghost sm" style="cursor:pointer">Import<input type="file" id="importFile" accept="application/json" hidden></label>
+    </div>
+    <div id="savedList" class="saved-list"></div>
+  </aside>
+</div>
 
 <form id="qform" method="POST" action="/generate" enctype="multipart/form-data" class="wrap">
 
