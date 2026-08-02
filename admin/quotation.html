@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Quotation Maker | Bharat iON Systems Admin</title>
+<link rel="icon" href="../assets/images/favicon/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<div class="layout">
+  <aside data-sidebar></aside>
+  <div class="main">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+        <h1>Quotation Maker</h1>
+      </div>
+      <div class="no-print" style="display:flex;gap:10px">
+        <button class="btn btn-sm" id="btnNew">New</button>
+        <button class="btn btn-sm" id="btnSave">Save</button>
+        <button class="btn btn-sm btn-primary" id="btnPreview">Preview / Print</button>
+      </div>
+    </div>
+    <div class="content">
+
+      <div class="card no-print">
+        <h2>Customer &amp; quote details</h2>
+        <p class="hint">Fill in the details, add machines below, then Preview / Print to save as PDF.</p>
+        <div class="row">
+          <div class="field"><label>Quote number</label><input id="q_number" placeholder="auto"></div>
+          <div class="field"><label>Date</label><input id="q_date" type="date"></div>
+          <div class="field"><label>Valid until</label><input id="q_valid" type="date"></div>
+        </div>
+        <div class="row">
+          <div class="field"><label>Customer name <span class="req">*</span></label><input id="c_name" placeholder="Contact person"></div>
+          <div class="field"><label>Company</label><input id="c_company" placeholder="Business / firm name"></div>
+        </div>
+        <div class="row">
+          <div class="field"><label>Phone</label><input id="c_phone" placeholder="+91 ..."></div>
+          <div class="field"><label>Email</label><input id="c_email" type="email" placeholder="name@email.com"></div>
+          <div class="field"><label>City / State</label><input id="c_city" placeholder="City, State"></div>
+        </div>
+        <div class="field"><label>Address</label><textarea id="c_address" rows="2" placeholder="Full billing / delivery address"></textarea></div>
+      </div>
+
+      <div class="card no-print">
+        <h2>Line items</h2>
+        <p class="hint">Quick-add a machine, or add a custom row. Amounts calculate automatically.</p>
+        <div class="row" style="align-items:flex-end">
+          <div class="field" style="flex:2"><label>Quick add machine</label>
+            <select id="prodPick"><option value="">Select a machine\u2026</option></select>
+          </div>
+          <div class="field" style="flex:none"><label>&nbsp;</label>
+            <button class="btn btn-primary" id="btnAddProd">+ Add machine</button>
+          </div>
+          <div class="field" style="flex:none"><label>&nbsp;</label>
+            <button class="btn" id="btnAddCustom">+ Custom row</button>
+          </div>
+        </div>
+        <div style="overflow:auto">
+        <table id="itemsTable">
+          <thead><tr>
+            <th style="width:40%">Description</th>
+            <th style="width:70px">Qty</th>
+            <th style="width:120px">Unit price</th>
+            <th style="width:90px">Disc %</th>
+            <th style="width:130px" class="t-right">Amount</th>
+            <th style="width:40px"></th>
+          </tr></thead>
+          <tbody id="itemsBody"></tbody>
+        </table>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="field" style="flex:2"><label>Notes</label><textarea id="q_notes" rows="2" placeholder="Optional notes to the customer"></textarea></div>
+          <div class="field" style="flex:none;max-width:150px"><label>GST %</label><input id="q_gst" type="number" step="0.01"></div>
+        </div>
+        <div class="totals">
+          <div class="tr"><span>Subtotal</span><b id="t_sub">\u20B90.00</b></div>
+          <div class="tr"><span>GST (<span id="t_gstp">18</span>%)</span><b id="t_gst">\u20B90.00</b></div>
+          <div class="tr grand"><span>Grand Total</span><span id="t_grand">\u20B90.00</span></div>
+        </div>
+        <div class="field" style="margin-top:12px"><label>Terms &amp; conditions</label><textarea id="q_terms" rows="2"></textarea></div>
+        <div class="inline-actions">
+          <button class="btn btn-primary" id="btnPreview2">Preview / Print (PDF)</button>
+          <button class="btn btn-green" id="btnSave2">Save quotation</button>
+          <button class="btn btn-ghost" id="btnExport">Export JSON</button>
+          <button class="btn btn-ghost" id="btnApi" style="display:none">Send to backend</button>
+        </div>
+      </div>
+
+      <!-- Printable preview -->
+      <div class="card" id="quotePreview" style="display:none"></div>
+    </div>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script src="js/admin-common.js"></script>
+<script src="js/quotation.js"></script>
+</body>
+</html>

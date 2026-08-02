@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Admin Dashboard | Bharat iON Systems</title>
+<link rel="icon" href="../assets/images/favicon/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<div class="layout">
+  <aside data-sidebar></aside>
+  <div class="main">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+        <h1>Dashboard</h1>
+      </div>
+      <span class="who">Bharat iON Systems &middot; Admin</span>
+    </div>
+    <div class="content">
+      <div class="note note-info">
+        Welcome! This admin panel runs in your browser and needs no server. Your quotations and blog drafts are saved locally on this device. To sync across devices or accept live image uploads, connect your backend in <code>admin/config.js</code>.
+      </div>
+
+      <div class="grid cols-3">
+        <a class="tile" href="quotation.html">
+          <div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M7 3h7l5 5v13H7zM14 3v5h5M9 13h6M9 17h6" stroke="#1656C4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h3>Quotation Maker</h3>
+          <p>Build professional, GST-ready quotations, then print or save them as PDF.</p>
+        </a>
+        <a class="tile" href="blog.html">
+          <div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M4 5h16v14H4zM4 9h16M8 13h8M8 16h5" stroke="#24A24B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h3>Blog Composer</h3>
+          <p>Write SEO-ready posts and generate a ready-to-publish HTML file matching your site.</p>
+        </a>
+        <a class="tile" href="images.html">
+          <div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M4 5h16v14H4zM8 11l3 3 3-4 4 5H4z" stroke="#E23127" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h3>Image Manager</h3>
+          <p>Preview and prepare the logo, favicon, banners and product photos for upload.</p>
+        </a>
+      </div>
+
+      <div class="card">
+        <h2>Recent quotations</h2>
+        <p class="hint">Saved on this device.</p>
+        <div id="recentQuotes"><p class="muted">No quotations yet. <a href="quotation.html">Create one</a>.</p></div>
+      </div>
+
+      <div class="card">
+        <h2>Blog drafts</h2>
+        <p class="hint">Saved on this device.</p>
+        <div id="recentDrafts"><p class="muted">No drafts yet. <a href="blog.html">Write a post</a>.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script src="js/admin-common.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var A = window.ADMIN;
+  var quotes = A.store.get('quotes', []);
+  if (quotes.length) {
+    var host = document.getElementById('recentQuotes');
+    host.innerHTML = '';
+    var tbl = A.el('table', {}, [
+      A.el('thead', {}, [A.el('tr', {}, [
+        A.el('th', { text: 'Quote #' }), A.el('th', { text: 'Customer' }),
+        A.el('th', { text: 'Date' }), A.el('th', { class: 't-right', text: 'Total' }), A.el('th', {})
+      ])])
+    ]);
+    var tb = A.el('tbody', {});
+    quotes.slice(-6).reverse().forEach(function (q) {
+      tb.appendChild(A.el('tr', {}, [
+        A.el('td', { text: q.number || '-' }),
+        A.el('td', { text: (q.customer && q.customer.name) || '-' }),
+        A.el('td', { text: q.date || '-' }),
+        A.el('td', { class: 't-right', text: A.money(q.total || 0) }),
+        A.el('td', {}, [A.el('a', { href: 'quotation.html?id=' + encodeURIComponent(q.id), text: 'Open' })])
+      ]));
+    });
+    tbl.appendChild(tb); host.appendChild(tbl);
+  }
+  var drafts = A.store.get('blog_drafts', []);
+  if (drafts.length) {
+    var dh = document.getElementById('recentDrafts');
+    dh.innerHTML = '';
+    drafts.slice(-6).reverse().forEach(function (d) {
+      dh.appendChild(A.el('div', { style: 'padding:8px 0;border-bottom:1px solid var(--line)' }, [
+        A.el('a', { href: 'blog.html?id=' + encodeURIComponent(d.id), text: d.title || '(untitled)' }),
+        A.el('span', { class: 'muted', text: '  \u00b7  ' + (d.category || '') })
+      ]));
+    });
+  }
+});
+</script>
+</body>
+</html>
