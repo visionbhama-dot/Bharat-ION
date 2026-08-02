@@ -23,10 +23,11 @@ When a logo is present the built-in text wordmark is hidden automatically.
 |-----------|----------|-------------|
 | `favicon.png` | Browser tab icon | Square PNG, 512×512 px (or 32×32 / .ico). |
 
-## 3. Main banner background  →  `assets/images/banner/`
+## 3. Backgrounds  →  `assets/images/banner/`
 | File name | Used for | Recommended |
 |-----------|----------|-------------|
 | `hero-banner.jpg` | Home page hero background | Wide landscape photo, ~1920×1080 px. A dark blue overlay is applied automatically so the white headline stays readable. |
+| `process-bg.jpg` | "The Complete Line" process section background | Wide landscape photo, ~1920×760 px. A dark blue overlay is applied automatically. |
 
 ## 4. Product photos  →  `assets/images/products/`
 Use these exact base names (one photo per machine). They appear on the product
@@ -50,8 +51,14 @@ the card, so keep the machine centred.
 ---
 
 ### Notes
-- Paths are site-root absolute (`/assets/images/...`), so they work on the live
-  domain (bharationsystems.com) regardless of which page they appear on.
+- **Demo images are already included** in every folder so you can see the layout
+  immediately. To use your own, just overwrite each file with the **same file
+  name** (any accepted extension works — the site auto-detects it).
+- Paths are resolved relative to the site, so images work on the live domain,
+  on GitHub Pages, and in local preview — regardless of which page they appear on.
+- The logo and favicon are also picked up from the legacy `assets/` folder
+  (`assets/logo.png`) if you happen to drop them there, but the folders above are
+  the recommended location.
 - After adding or replacing images, just refresh the page. If an image seems
   cached, do a hard refresh (Ctrl/Cmd + Shift + R).
 - `.gitkeep` files only keep empty folders in git — you can ignore/leave them.
