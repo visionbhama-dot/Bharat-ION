@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quotation Generator &mdash; Bharat iON Systems</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='editor.css') }}">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="dot"></span>
+    <div><b>Bharat iON Systems</b><small>Quotation Generator</small></div>
+  </div>
+  <div class="actions">
+    <label class="chk"><input type="checkbox" name="flatten" form="qform"> Extra-lock (flatten)</label>
+    <button type="submit" form="qform" formaction="/preview" formtarget="_blank" class="btn ghost">Preview</button>
+    <button type="submit" form="qform" formaction="/generate" class="btn primary">Download Locked PDF</button>
+  </div>
+</header>
+
+<form id="qform" method="POST" action="/generate" enctype="multipart/form-data" class="wrap">
+
+  <div class="col">
+    <section class="card">
+      <h2>Logo &amp; Company</h2>
+      <div class="logo-row">
+        <div class="logo-box" id="logoBox"><span>Logo preview</span></div>
+        <div class="grow">
+          <label>Upload logo (PNG/JPG)</label>
+          <input type="file" name="logo" id="logoInput" accept="image/*">
+          <p class="hint">Leave empty to keep the last uploaded logo (or the built-in emblem).</p>
+        </div>
+      </div>
+      <label>Watermark logo (optional)</label>
+      <input type="file" name="watermark" accept="image/*">
+      <p class="hint">Shown faintly in the centre of every page. Leave empty to use your main logo.</p>
+      <label>Company name</label>
+      <input type="text" name="co_name" value="{{ v.co_name }}">
+      <label>Tagline line 1</label>
+      <input type="text" name="co_tag1" value="{{ v.co_tag1 }}">
+      <label>Tagline line 2</label>
+      <input type="text" name="co_tag2" value="{{ v.co_tag2 }}">
+      <div class="grid2">
+        <div><label>Phone</label><input type="text" name="co_phone" value="{{ v.co_phone }}"></div>
+        <div><label>GSTIN</label><input type="text" name="co_gstin" value="{{ v.co_gstin }}"></div>
+        <div><label>Email</label><input type="text" name="co_email" value="{{ v.co_email }}"></div>
+        <div><label>Website</label><input type="text" name="co_web" value="{{ v.co_web }}"></div>
+      </div>
+      <label>Address</label>
+      <input type="text" name="co_addr" value="{{ v.co_addr }}">
+    </section>
+
+    <section class="card">
+      <h2>Document &amp; Customer</h2>
+      <div class="grid3">
+        <div><label>Ref No.</label><input type="text" name="ref" value="{{ v.ref }}"></div>
+        <div><label>Date</label><input type="text" name="date" value="{{ v.date }}"></div>
+        <div><label>Validity</label><input type="text" name="validity" value="{{ v.validity }}"></div>
+      </div>
+      <div class="grid2">
+        <div><label>Customer name</label><input type="text" name="cust_name" value="{{ v.cust_name }}"></div>
+        <div><label>Firm</label><input type="text" name="cust_firm" value="{{ v.cust_firm }}"></div>
+        <div><label>City</label><input type="text" name="cust_city" value="{{ v.cust_city }}"></div>
+        <div><label>Mobile</label><input type="text" name="cust_mob" value="{{ v.cust_mob }}"></div>
+      </div>
+      <label>Subject</label>
+      <input type="text" name="subject" value="{{ v.subject }}">
+      <label>Intro paragraph</label>
+      <textarea name="intro" rows="3">{{ v.intro }}</textarea>
+    </section>
+
+    <section class="card">
+      <h2>Bank &amp; Payment Details</h2>
+      <div class="grid2">
+        <div><label>Bank name</label><input type="text" name="bank_name" value="{{ v.bank_name }}"></div>
+        <div><label>Account no.</label><input type="text" name="bank_ac" value="{{ v.bank_ac }}"></div>
+        <div><label>Branch</label><input type="text" name="bank_branch" value="{{ v.bank_branch }}"></div>
+        <div><label>IFSC code</label><input type="text" name="bank_ifsc" value="{{ v.bank_ifsc }}"></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="col">
+    <section class="card">
+      <div class="card-head">
+        <h2>Price Schedule Items</h2>
+        <button type="button" class="btn small" id="addItem">+ Add item</button>
+      </div>
+      <p class="hint">Each item shows an image, name, description, quantity and price on the pricing page.</p>
+      <div id="items"></div>
+      <label style="margin-top:10px">Note (below price table)</label>
+      <textarea name="note" rows="3">{{ v.note }}</textarea>
+    </section>
+
+    {% if v.products %}
+    <section class="card">
+      <h2>Product Range Page &mdash; Images</h2>
+      <p class="hint">Upload a photo for each machine shown on the &ldquo;Our Product Range&rdquo; page.
+      Leave empty to use the built-in illustration (photos are remembered after first upload).</p>
+      <div class="prodlist">
+        {% for p in v.products %}
+        <div class="prow">
+          <label class="imgbox prodbox"><span>+ image</span><input type="file" name="prod_img_{{ p.key }}" accept="image/*"></label>
+          <input type="hidden" name="prod_key" value="{{ p.key }}">
+          <div class="pf">
+            <span class="pcatlbl">{{ p.cat }}</span>
+            <input type="text" name="prod_name" value="{{ p.name }}">
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    <section class="card">
+      <h2>Technical Specifications</h2>
+      <p class="hint">One per line, as <code>Label: Value</code></p>
+      <textarea name="specs" rows="9" class="mono">{{ v.specs_text }}</textarea>
+    </section>
+
+    <section class="card">
+      <h2>Machine Quality Parts</h2>
+      <p class="hint">One per line, as <code>Item | Make | Origin</code></p>
+      <textarea name="parts" rows="6" class="mono">{{ v.parts_text }}</textarea>
+    </section>
+
+    <section class="card">
+      <h2>Terms &amp; Conditions</h2>
+      <p class="hint">One per line, as <code>Title | Description</code></p>
+      <textarea name="terms" rows="10" class="mono">{{ v.terms_text }}</textarea>
+    </section>
+
+    <div class="footer-actions">
+      <button type="submit" formaction="/preview" formtarget="_blank" class="btn ghost">Preview</button>
+      <button type="submit" formaction="/generate" class="btn primary">Download Locked PDF</button>
+    </div>
+  </div>
+</form>
+
+<script>
+window.__ITEMS__ = {{ v['items'] | tojson }};
+</script>
+<script src="{{ url_for('static', filename='editor.js') }}"></script>
+</body>
+</html>
