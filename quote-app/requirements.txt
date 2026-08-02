@@ -1,0 +1,4 @@
+Flask>=3.0
+weasyprint>=60
+pikepdf>=8
+pymupdf>=1.24
