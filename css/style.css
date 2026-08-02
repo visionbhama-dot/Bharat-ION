@@ -206,3 +206,11 @@ footer ul{list-style:none}footer li{margin-bottom:9px}
   .pgrid,.fgrid,.appg,.fcols,.blogwrap{grid-template-columns:1fr}
   .ctaband{flex-direction:column;text-align:center}
 }
+
+
+/* enquiry form: hidden honeypot + submit feedback message */
+.hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;opacity:0;pointer-events:none}
+.form-msg{margin-top:14px;padding:11px 14px;border-radius:9px;font-size:14px;display:none;line-height:1.5}
+.form-msg.ok{display:block;background:#e8f7ee;color:#166534;border:1px solid #b7e3c6}
+.form-msg.err{display:block;background:#fdecea;color:#9b1c15;border:1px solid #f5c2bd}
+.form-msg a{color:inherit;text-decoration:underline}

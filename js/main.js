@@ -51,7 +51,44 @@
     return last.replace(/\.html?$/i, '');
   }
 
+  /* ---- enquiry form -> emails info@bharationsystems.com via FormSubmit ---- */
+  function wireEnquiryForm() {
+    var f = document.querySelector('form[data-enquiry]');
+    if (!f) return;
+    var email = 'info' + '@' + 'bharationsystems.com';
+    function msgEl() {
+      var m = f.querySelector('.form-msg');
+      if (!m) { m = document.createElement('div'); m.className = 'form-msg'; f.appendChild(m); }
+      return m;
+    }
+    f.addEventListener('submit', function (e) {
+      var hp = f.querySelector('[name="_honey"]');
+      if (hp && hp.value) { e.preventDefault(); return; }      // bot trap
+      if (!f.checkValidity()) return;                          // let browser show errors
+      e.preventDefault();
+      var btn = f.querySelector('button[type="submit"], button:not([type])');
+      var orig = btn ? btn.textContent : '';
+      if (btn) { btn.disabled = true; btn.textContent = 'Sending\u2026'; }
+      var m = msgEl(); m.className = 'form-msg'; m.textContent = '';
+      fetch('https://formsubmit.co/ajax/' + email, {
+        method: 'POST', headers: { 'Accept': 'application/json' }, body: new FormData(f)
+      }).then(function (r) { return r.json(); }).then(function (data) {
+        var okFlag = data && (data.success === true || data.success === 'true');
+        m.className = 'form-msg ok';
+        m.textContent = okFlag
+          ? 'Thank you! Your enquiry has been sent \u2014 we\u2019ll get back to you shortly.'
+          : 'Thank you! Your enquiry has been received.';
+        f.reset();
+      }).catch(function () {
+        m.className = 'form-msg err';
+        m.innerHTML = 'Sorry, something went wrong. Please call/WhatsApp us or email <a href="mailto:' + email + '">' + email + '</a>.';
+      }).then(function () { if (btn) { btn.disabled = false; btn.textContent = orig; } });
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
+    wireEnquiryForm();
+
     /* ---- mobile menu ---- */
     var burger = document.querySelector('.burger');
     var menu = document.querySelector('.menu');
