@@ -1,0 +1,12 @@
+# Render Blueprint — deploys the quote-app (quotation PDF generator).
+# In Render: New + > Blueprint > connect this repo. It reads this file.
+services:
+  - type: web
+    name: bharation-quotation
+    runtime: docker
+    plan: free
+    region: singapore            # closest free region to India; change if you like
+    dockerfilePath: ./quote-app/Dockerfile
+    dockerContext: ./quote-app
+    healthCheckPath: /
+    autoDeploy: true

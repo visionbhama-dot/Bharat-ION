@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Blog Composer | Bharat iON Systems Admin</title>
+<link rel="icon" href="../assets/images/favicon/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/admin.css">
+<style>
+  .editor-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:1000px){.editor-grid{grid-template-columns:1fr}}
+  .toolbar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+  .toolbar button{font-size:12.5px;padding:6px 10px;border:1px solid var(--line);background:#fff;border-radius:7px;cursor:pointer;font-weight:600}
+  .toolbar button:hover{background:var(--soft)}
+  #bodyInput{min-height:320px;font-family:ui-monospace,Menlo,monospace;font-size:13px;line-height:1.6}
+  .prev-wrap{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+  .prev-wrap .ph{background:var(--navy);color:#fff;padding:10px 14px;font-size:12px;letter-spacing:.4px;text-transform:uppercase}
+  .article-preview{padding:20px 22px;max-height:520px;overflow:auto}
+  .article-preview h1{font-size:24px;color:var(--navy);margin-bottom:6px}
+  .article-preview .cat{display:inline-block;background:var(--soft);color:var(--blue);font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:8px}
+  .article-preview .meta{color:var(--muted);font-size:12.5px;margin-bottom:14px}
+  .article-preview h2{font-size:18px;margin:18px 0 8px;color:var(--navy)}
+  .article-preview p{margin:0 0 12px;color:#33425f}
+  .article-preview ul,.article-preview ol{margin:0 0 12px 20px;color:#33425f}
+  .article-preview a{color:var(--blue)}
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside data-sidebar></aside>
+  <div class="main">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+        <h1>Blog Composer</h1>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-sm" id="btnNew">New</button>
+        <button class="btn btn-sm" id="btnSaveDraft">Save draft</button>
+        <button class="btn btn-sm btn-green" id="btnGenerate">Generate HTML</button>
+      </div>
+    </div>
+    <div class="content">
+      <div class="note note-info">
+        Write your post, click <b>Generate HTML</b>, then download the file and place it in the <code>/blog/</code> folder. You'll also get the ready-made blog-card, sitemap and index snippets to paste in.
+      </div>
+
+      <div class="editor-grid">
+        <!-- editor -->
+        <div class="card">
+          <h2>Post details</h2>
+          <div class="field"><label>Title <span class="req">*</span></label><input id="f_title" placeholder="e.g. How to Choose a Bottle Filling Machine"></div>
+          <div class="row">
+            <div class="field"><label>URL slug</label><input id="f_slug" placeholder="auto-from-title"></div>
+            <div class="field" style="flex:none;max-width:180px"><label>Category</label><select id="f_cat"></select></div>
+          </div>
+          <div class="row">
+            <div class="field"><label>Date</label><input id="f_date" type="date"></div>
+            <div class="field" style="flex:none;max-width:150px"><label>Read time (min)</label><input id="f_read" type="number" min="1" value="6"></div>
+          </div>
+          <div class="field"><label>Meta description (SEO) <span class="req">*</span></label><textarea id="f_desc" rows="2" placeholder="1-2 sentence summary shown on Google (max ~160 chars)"></textarea><small class="muted" id="descCount"></small></div>
+
+          <label style="font-weight:600;font-size:13px;color:var(--navy)">Body</label>
+          <div class="toolbar">
+            <button type="button" data-ins="h2">H2 Heading</button>
+            <button type="button" data-ins="p">Paragraph</button>
+            <button type="button" data-wrap="strong">Bold</button>
+            <button type="button" data-ins="ul">Bullet list</button>
+            <button type="button" data-ins="ol">Numbered list</button>
+            <button type="button" data-ins="link">Link</button>
+            <button type="button" data-ins="prodlink">Product link</button>
+          </div>
+          <textarea id="bodyInput" placeholder="Write here. Basic HTML is supported (use the buttons above)."></textarea>
+
+          <div class="field" style="margin-top:14px"><label>Related machinery (shown at the end)</label>
+            <div class="pill-list" id="relList"></div>
+          </div>
+        </div>
+
+        <!-- preview -->
+        <div>
+          <div class="prev-wrap">
+            <div class="ph">Live preview</div>
+            <div class="article-preview" id="preview"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- generated output -->
+      <div class="card" id="outCard" style="display:none">
+        <h2>Generated files</h2>
+        <p class="hint">1) Download &amp; add the post file to <code>/blog/</code>. 2) Paste the snippets into the listed files.</p>
+        <div class="inline-actions" style="margin-bottom:14px">
+          <button class="btn btn-primary" id="btnDownload">\u2B07 Download post HTML</button>
+          <button class="btn btn-ghost" id="btnApiBlog" style="display:none">Send to backend</button>
+        </div>
+        <h3 style="font-size:14px;margin:14px 0 6px">Blog post file &mdash; <code id="fileNameLbl"></code></h3>
+        <div class="mono" id="outHtml"></div>
+        <h3 style="font-size:14px;margin:16px 0 6px">Card snippet <button class="btn btn-sm" data-copy="outCard2" style="margin-left:6px">Copy</button> <span class="muted">&rarr; paste inside <code>.blogwrap</code> in <code>blog.html</code></span></h3>
+        <div class="mono" id="outCard2"></div>
+        <h3 style="font-size:14px;margin:16px 0 6px">Sitemap entry <button class="btn btn-sm" data-copy="outSitemap" style="margin-left:6px">Copy</button> <span class="muted">&rarr; add to <code>sitemap.xml</code></span></h3>
+        <div class="mono" id="outSitemap"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script src="js/admin-common.js"></script>
+<script src="js/blog.js"></script>
+</body>
+</html>

@@ -155,6 +155,7 @@ def _build_data_from_form():
     descs = f.getlist("item_desc")
     qtys = f.getlist("item_qty")
     prices = f.getlist("item_price")
+    prods = f.getlist("item_prod")          # optional: reuse a bundled machine photo
     images = request.files.getlist("item_image")
     items = []
     for i, name in enumerate(names):
@@ -163,6 +164,9 @@ def _build_data_from_form():
         img_path = None
         if i < len(images):
             img_path = _save_upload(images[i], f"item{i}")
+        # no upload for this row? fall back to the permanent bundled product photo
+        if not img_path and i < len(prods) and prods[i]:
+            img_path = qr._product_default_img(prods[i])
         items.append({
             "img": img_path,
             "name": name.strip(),
@@ -239,6 +243,24 @@ def _build_view():
 @app.route("/")
 def editor():
     return render_template("editor.html", v=_build_view())
+
+
+@app.route("/logoimg")
+def logoimg():
+    """Serve the permanent bundled company logo (for the editor preview)."""
+    p = qr._default_logo()
+    if not p or not os.path.exists(p):
+        abort(404)
+    return send_file(p)
+
+
+@app.route("/prodimg/<key>")
+def prodimg(key):
+    """Serve a permanent bundled product photo by key (for the editor preview)."""
+    p = qr._product_default_img(key)
+    if not p or not os.path.exists(p):
+        abort(404)
+    return send_file(p)
 
 
 @app.route("/preview", methods=["POST"])

@@ -1,0 +1,18 @@
+{
+  "name": "Bharat iON Systems Pvt. Ltd.",
+  "short_name": "Bharat iON",
+  "description": "Manufacturer & supplier of water treatment and bottle packaging machinery in India.",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#08214E",
+  "icons": [
+    {
+      "src": "/assets/images/favicon/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

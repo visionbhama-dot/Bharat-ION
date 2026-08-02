@@ -1,0 +1,4 @@
+# The Flask quote-app is deployed separately (Render), not on the static frontend.
+quote-app
+render.yaml
+DEPLOYMENT.md

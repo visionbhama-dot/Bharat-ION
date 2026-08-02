@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Image Manager | Bharat iON Systems Admin</title>
+<link rel="icon" href="../assets/images/favicon/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<div class="layout">
+  <aside data-sidebar></aside>
+  <div class="main">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+        <h1>Image Manager</h1>
+      </div>
+    </div>
+    <div class="content">
+      <div class="note note-info" id="modeNote"></div>
+
+      <div class="card">
+        <h2>Branding</h2>
+        <p class="hint">Logo &amp; favicon used across the whole website.</p>
+        <div id="slots-brand"></div>
+      </div>
+
+      <div class="card">
+        <h2>Backgrounds</h2>
+        <p class="hint">Large images for the home hero and the process section.</p>
+        <div id="slots-bg"></div>
+      </div>
+
+      <div class="card">
+        <h2>Product photos</h2>
+        <p class="hint">One photo per machine. Shown on product cards and detail pages.</p>
+        <div id="slots-prod"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script src="js/admin-common.js"></script>
+<script src="js/images.js"></script>
+</body>
+</html>
