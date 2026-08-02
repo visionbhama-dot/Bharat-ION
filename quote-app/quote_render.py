@@ -53,12 +53,51 @@ def wordmark(size=16):
             f'<span style="font-weight:700;letter-spacing:.18em;font-size:{size*0.62:.0f}pt">SYSTEMS</span></div>')
 
 
+# --- permanent, bundled images (ship with the app, so nothing to re-upload) ---
+ASSETS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
+_URL_PREFIXES = ("http://", "https://", "data:")
+
+
+def _is_url(src):
+    return bool(src) and str(src).startswith(_URL_PREFIXES)
+
+
+def _img_usable(src):
+    """True if src is a remote URL or an existing local file."""
+    return bool(src) and (_is_url(src) or os.path.exists(src))
+
+
 def _fileuri(path):
-    return "file://" + os.path.abspath(path) if path else ""
+    if not path:
+        return ""
+    if _is_url(path):
+        return path
+    return "file://" + os.path.abspath(path)
+
+
+def _default_logo():
+    """Bundled company logo (quote-app/assets/logo.*) - always available."""
+    for ext in (".png", ".svg", ".jpg", ".jpeg", ".webp"):
+        p = os.path.join(ASSETS_DIR, "logo" + ext)
+        if os.path.exists(p):
+            return p
+    return None
+
+
+def _product_default_img(key):
+    """Bundled product photo (quote-app/assets/products/<key>.*), if present."""
+    if not key:
+        return None
+    for ext in (".jpg", ".jpeg", ".png", ".webp"):
+        p = os.path.join(ASSETS_DIR, "products", str(key) + ext)
+        if os.path.exists(p):
+            return p
+    return None
 
 
 def logo_block(logo_path):
-    if logo_path and os.path.exists(logo_path):
+    logo_path = logo_path if _img_usable(logo_path) else _default_logo()
+    if _img_usable(logo_path):
         inner = f'<img src="{_fileuri(logo_path)}" alt="logo" style="height:auto;width:auto;max-height:17mm;max-width:52mm;object-fit:contain">'
     else:
         inner = f'{emblem(50)}{wordmark(15)}'
@@ -75,7 +114,7 @@ def placeholder_thumb():
 
 
 def item_image(img_path):
-    if img_path and os.path.exists(img_path):
+    if _img_usable(img_path):
         return f'<img src="{_fileuri(img_path)}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:6px">'
     return placeholder_thumb()
 
@@ -230,16 +269,16 @@ def _frame():
 
 
 def _watermark(co):
-    src = co.get("watermark") or co.get("logo")
-    if src and os.path.exists(src):
+    src = co.get("watermark") or co.get("logo") or _default_logo()
+    if _img_usable(src):
         return f'<div class="pgwm"><img src="{_fileuri(src)}" style="width:120mm"></div>'
     return f'<div class="pgwm">{emblem(150)}</div>'
 
 
 def _logo_mark(co, size=80):
-    """Uploaded logo image if available, else the built-in emblem."""
-    src = co.get("logo")
-    if src and os.path.exists(src):
+    """Uploaded/bundled logo image if available, else the built-in emblem."""
+    src = co.get("logo") or _default_logo()
+    if _img_usable(src):
         return f'<img src="{_fileuri(src)}" alt="logo" style="height:{size}px;width:auto">'
     return emblem(size)
 
@@ -253,7 +292,9 @@ def _product_range_inner(d):
     tiles = ""
     for p in prods:
         img = p.get("img")
-        if img and os.path.exists(img):
+        if not _img_usable(img):
+            img = _product_default_img(p.get("key"))   # permanent bundled photo
+        if _img_usable(img):
             visual = f'<img src="{_fileuri(img)}" alt="" style="width:100%;height:100%;object-fit:cover">'
         elif _pd and p.get("key") in _pd.SVGS:
             visual = _pd.SVGS[p["key"]]()

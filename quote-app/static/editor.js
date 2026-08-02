@@ -16,10 +16,24 @@
     });
   }
 
+  var PRODUCTS = window.__PRODUCTS__ || [];
+
+  function prodOptions(selected) {
+    var opts = '<option value="">&mdash; Custom / upload image &mdash;</option>';
+    PRODUCTS.forEach(function (p) {
+      opts += '<option value="' + esc(p.key) + '"' + (p.key === selected ? ' selected' : '') + '>' + esc(p.name) + '</option>';
+    });
+    return opts;
+  }
+
   function itemRow(it) {
     it = it || {};
     var wrap = document.createElement('div');
     wrap.className = 'item';
+    var prodField = PRODUCTS.length
+      ? '<label>Use machine photo (no upload needed)</label>' +
+        '<select name="item_prod" class="prodsel">' + prodOptions(it.prod) + '</select>'
+      : '<input type="hidden" name="item_prod" value="">';
     wrap.innerHTML =
       '<span class="num"></span>' +
       '<button type="button" class="del">Remove</button>' +
@@ -32,6 +46,7 @@
           '<input type="text" name="item_name" value="' + esc(it.name) + '" placeholder="Machine / product name">' +
           '<label>Description</label>' +
           '<input type="text" name="item_desc" value="' + esc(it.desc) + '" placeholder="Short description / specs">' +
+          prodField +
         '</div>' +
       '</div>' +
       '<div class="row2">' +
@@ -40,7 +55,26 @@
       '</div>';
 
     wrap.querySelector('.del').addEventListener('click', function () { wrap.remove(); renumber(); });
-    attachPreview(wrap.querySelector('.imgbox'));
+    var box = wrap.querySelector('.imgbox');
+    var fileInput = box.querySelector('input[type=file]');
+    attachPreview(box);
+
+    // when a machine is picked, preview its permanent bundled photo (unless a file was uploaded)
+    var sel = wrap.querySelector('.prodsel');
+    if (sel) {
+      var showProd = function () {
+        if (fileInput.files && fileInput.files[0]) return;   // uploaded image wins
+        if (sel.value) {
+          box.innerHTML = '<img src="/prodimg/' + encodeURIComponent(sel.value) + '" alt="">';
+          box.appendChild(fileInput);
+        } else {
+          box.innerHTML = '<span>+ Add<br>image</span>';
+          box.appendChild(fileInput);
+        }
+      };
+      sel.addEventListener('change', showProd);
+      if (sel.value) showProd();
+    }
     return wrap;
   }
 

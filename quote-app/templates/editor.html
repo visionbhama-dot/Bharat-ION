@@ -25,7 +25,7 @@
     <section class="card">
       <h2>Logo &amp; Company</h2>
       <div class="logo-row">
-        <div class="logo-box" id="logoBox"><span>Logo preview</span></div>
+        <div class="logo-box" id="logoBox"><img src="/logoimg" alt="current logo" onerror="this.parentNode.innerHTML='<span>Logo preview</span>'"></div>
         <div class="grow">
           <label>Upload logo (PNG/JPG)</label>
           <input type="file" name="logo" id="logoInput" accept="image/*">
@@ -140,6 +140,7 @@
 
 <script>
 window.__ITEMS__ = {{ v['items'] | tojson }};
+window.__PRODUCTS__ = {{ v['products'] | tojson }};
 </script>
 <script src="{{ url_for('static', filename='editor.js') }}"></script>
 </body>

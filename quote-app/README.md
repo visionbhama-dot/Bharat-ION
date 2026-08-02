@@ -34,6 +34,23 @@ python3 app.py
 # open http://localhost:5000
 ```
 
+## Permanent images (no re-uploading)
+
+Free hosts like Render have an **ephemeral disk**, so anything uploaded at runtime
+is lost on restart. To avoid re-uploading every time, the fixed images now **ship
+with the app** in `quote-app/assets/` and are used automatically:
+
+- **`assets/logo.png`** — company logo (header, watermark, thank-you page).
+- **`assets/products/<key>.jpg`** — product-range photos. Keys: `semi`,
+  `handblow`, `full`, `ro`, `station`, `fill`, `label`, `shrink`, `ink`.
+
+In the editor you can also pick **"Use machine photo"** on any price-schedule row
+to reuse these permanent photos instead of uploading.
+
+**To change a permanent image:** replace the file in `quote-app/assets/` (keep the
+same name) and redeploy. Uploading in the editor still works as a one-off override,
+and image fields also accept full `https://` URLs.
+
 ## How to use
 1. Fill in the fields (they come pre-filled with a sample quotation).
 2. Upload your **logo** and each item's **image** (optional — a placeholder is used if none).
