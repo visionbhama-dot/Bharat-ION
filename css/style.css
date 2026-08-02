@@ -33,6 +33,9 @@ header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.96);backdro
 .logo .lk b{font-size:19px;letter-spacing:.02em}
 .logo .lk b i{color:var(--gold);font-style:normal}
 .logo .lk small{font-size:8.5px;letter-spacing:.22em;color:var(--muted);font-weight:600;text-transform:uppercase}
+/* when a real logo image is uploaded, JS adds .has-img and the text wordmark is hidden */
+.logo.has-img .lk{display:none}
+.logo .logo-img{height:48px;width:auto}
 .menu{display:flex;align-items:center;gap:26px;list-style:none}
 .menu a{color:var(--ink);font-weight:600;font-size:15px}
 .menu a:hover{color:var(--blue)}
@@ -42,7 +45,10 @@ header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.96);backdro
 .burger span{width:26px;height:3px;background:var(--navy);border-radius:2px}
 
 /* hero */
-.hero{background:linear-gradient(150deg,var(--navy) 0%,var(--blue-d) 55%,var(--blue) 120%);color:#fff;position:relative;overflow:hidden}
+/* Solid gradient is the fallback. If a banner image is uploaded to
+   /assets/images/banner/ (e.g. hero-banner.jpg), main.js layers it in
+   automatically with a dark overlay for text legibility. */
+.hero{background:linear-gradient(150deg,var(--navy) 0%,var(--blue-d) 55%,var(--blue) 120%);color:#fff;position:relative;overflow:hidden;background-size:cover;background-position:center}
 .hero .container{display:grid;grid-template-columns:1.15fr .85fr;gap:30px;align-items:center;padding-top:64px;padding-bottom:64px}
 .hero .blob{position:absolute;border-radius:50%;filter:blur(2px)}
 .hero h1{color:#fff;font-size:44px;font-weight:800}
@@ -63,8 +69,10 @@ header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.96);backdro
 .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
 .pcard{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff;transition:.2s;display:flex;flex-direction:column}
 .pcard:hover{box-shadow:0 14px 34px rgba(8,33,78,.12);transform:translateY(-3px)}
-.pcard .im{aspect-ratio:4/3;background:var(--soft);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.pcard .im{position:relative;aspect-ratio:4/3;background:var(--soft);display:flex;align-items:center;justify-content:center;overflow:hidden}
 .pcard .im img{width:100%;height:100%;object-fit:cover}
+/* uploaded photo overlays the built-in SVG placeholder when present */
+.im .ovimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2}
 .pcard .bd{padding:16px 17px;display:flex;flex-direction:column;flex:1}
 .pcard .cat{font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.08em}
 .pcard h3{font-size:17px;margin:4px 0 7px}
@@ -97,7 +105,7 @@ header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.96);backdro
 }
 
 /* alt band */
-.band{background:linear-gradient(135deg,var(--navy),var(--blue) 120%);color:#fff;padding:70px 0}
+.band{background:linear-gradient(135deg,var(--navy),var(--blue) 120%);color:#fff;padding:84px 0;margin:48px 0}
 .band .sec-t{color:#fff}
 .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
 .chips span{border:1.5px solid rgba(255,255,255,.3);border-radius:30px;padding:8px 15px;font-size:14px;font-weight:600}
@@ -129,7 +137,7 @@ header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.96);backdro
 .crumb{font-size:13.5px;color:var(--muted);padding:16px 0}
 .crumb a{color:var(--muted)}.crumb b{color:var(--navy)}
 .pd{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:start}
-.pd .im{background:var(--soft);border-radius:16px;overflow:hidden;border:1px solid var(--line)}
+.pd .im{position:relative;background:var(--soft);border-radius:16px;overflow:hidden;border:1px solid var(--line)}
 .pd .im img{width:100%}
 .pd h1{font-size:30px}
 .pd .rule{height:4px;width:60px;background:var(--gold);border-radius:2px;margin:12px 0}
@@ -175,6 +183,8 @@ footer ul{list-style:none}footer li{margin-bottom:9px}
 .fbot{border-top:1px solid rgba(255,255,255,.12);margin-top:36px;padding:18px 0;font-size:13px;text-align:center;color:#93a6c6}
 .flogo{display:flex;align-items:center;gap:10px;font-family:'Poppins';font-weight:800;color:#fff;font-size:19px;margin-bottom:12px}
 .flogo img{height:42px}
+.flogo.has-img span{display:none}
+.flogo .logo-img{height:44px;width:auto}
 .flogo i{color:var(--gold);font-style:normal}
 
 /* floating */

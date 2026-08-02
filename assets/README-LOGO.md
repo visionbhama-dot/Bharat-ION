@@ -1,13 +1,9 @@
-# Add the real logo here
+# Images have moved
 
-Save the Bharat iON Systems logo as **`logo.png`** in this folder
-(`website/assets/logo.png`).
+All uploadable images (logo, favicon, hero banner and product photos) are now
+organised under **`assets/images/`**, each in its own clearly-named folder.
 
-- When present, it is used automatically in the header, footer, hero and as the
-  favicon / social share image.
-- When absent, the site falls back to a text wordmark + a built-in globe/gear/arrow emblem.
+See **[`assets/images/IMAGE-UPLOAD-GUIDE.md`](images/IMAGE-UPLOAD-GUIDE.md)**
+for the exact folder + file names to use.
 
-Recommended: a transparent PNG, roughly 400x400 px (square) works best for the header;
-the same logo is fine for the hero.
-
-After adding it, rebuild with `python3 build_site.py` (or just ask and I'll rebuild).
+No build step is required — drop the files in and refresh the site.
