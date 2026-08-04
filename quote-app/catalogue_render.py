@@ -155,6 +155,56 @@ PRODUCTS = [
      "hl": ["Non-contact printing", "Fast-drying inks", "Logo &amp; barcode support", "Low maintenance"]},
 ]
 
+# ---- Icon set (simple line icons, stroke = currentColor) ----
+ICONS = {
+    "bolt": "<path d='M13 3 6 13h5l-1 8 8-12h-5z'/>",
+    "gauge": "<path d='M4 15a8 8 0 0 1 16 0'/><path d='M12 15l4-4'/><circle cx='12' cy='15' r='1'/>",
+    "drop": "<path d='M12 3c4 6 6 8 6 11a6 6 0 0 1-12 0c0-3 2-5 6-11z'/>",
+    "gear": "<circle cx='12' cy='12' r='3'/><path d='M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M5 19l2-2'/>",
+    "shield": "<path d='M12 3l7 3v5c0 4-3 7-7 8-4-1-7-4-7-8V6z'/><path d='M9 12l2 2 4-4'/>",
+    "leaf": "<path d='M20 4C9 4 4 11 4 20c9 0 16-5 16-16z'/><path d='M4 20C8 14 13 10 18 8'/>",
+    "clock": "<circle cx='12' cy='12' r='8'/><path d='M12 8v4l3 2'/>",
+    "wrench": "<path d='M14.5 6.5a3.5 3.5 0 0 0-4.9 4.9l-6 6 2 2 6-6a3.5 3.5 0 0 0 4.9-4.9l-2.1 2.1-2-2z'/>",
+    "barcode": "<path d='M4 5v14M8 5v14M11 5v14M15 5v14M18 5v14M20 5v14'/>",
+}
+
+
+def icon(name):
+    return (f"<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' "
+            f"stroke-linecap='round' stroke-linejoin='round'>{ICONS.get(name, '')}</svg>")
+
+
+# ---- Extra marketing data per product (model, headline stats, feature chips) ----
+EXTRA = {
+    "semi": {"model": "BIS-SB2",
+             "badges": [("1200", "BPH", "Max Output"), ("2", "L", "Max Bottle"), ("2", "Cav.", "Mould"), ("8", "Ton", "Clamping")],
+             "features": [("gear", "Auto-Drop System"), ("bolt", "Low Power Use"), ("clock", "Quick Mould Change"), ("shield", "1-Year Warranty")]},
+    "handblow": {"model": "BIS-HB4",
+                 "badges": [("2500", "BPH", "Max Output"), ("2", "L", "Max Bottle"), ("4", "Cav.", "Cavities"), ("18", "kW", "Power")],
+                 "features": [("gear", "Automatic Cycle"), ("bolt", "Cost-Efficient"), ("drop", "Even Wall Thickness"), ("wrench", "Easy Service")]},
+    "full": {"model": "BIS-FA6",
+             "badges": [("6000", "BPH", "Max Output"), ("6", "Cav.", "Cavities"), ("2", "L", "Max Bottle"), ("PLC", "+HMI", "Control")],
+             "features": [("gear", "Servo Stretch-Blow"), ("leaf", "Air Recovery"), ("bolt", "High Speed"), ("shield", "Robust Build")]},
+    "ro": {"model": "BIS-RO",
+           "badges": [("10,000", "LPH", "Max Capacity"), ("4+", "Stage", "Pre-treatment"), ("UV+O&#8323;", "", "Polishing"), ("24&times;7", "", "Operation")],
+           "features": [("drop", "IS 10500 Water"), ("gear", "Automatic Controls"), ("leaf", "High Recovery"), ("shield", "SS / FRP Build")]},
+    "station": {"model": "BIS-SF8",
+                "badges": [("1500", "BPH", "Max Output"), ("8", "Head", "Filling"), ("5", "L", "Max Bottle"), ("SS", "304/316", "Contact")],
+                "features": [("drop", "Drip-Free Nozzles"), ("gear", "Adjustable Fill"), ("shield", "Hygienic Build"), ("wrench", "Easy to Clean")]},
+    "fill": {"model": "BIS-RFC",
+             "badges": [("6000", "BPH", "Max Output"), ("3-in-1", "", "Monobloc"), ("2", "L", "Max Bottle"), ("CIP", "Ready", "Hygiene")],
+             "features": [("gear", "Synchronised Monobloc"), ("drop", "No-Bottle / No-Fill"), ("shield", "SS 304 / 316"), ("clock", "High-Speed")]},
+    "label": {"model": "BIS-LB",
+              "badges": [("6000", "BPH", "Max Output"), ("&plusmn;1", "mm", "Accuracy"), ("OPP", "BOPP", "Labels"), ("Servo", "", "Control")],
+              "features": [("gear", "Servo Controlled"), ("bolt", "Wrinkle-Free"), ("clock", "Fast Changeover"), ("barcode", "Coder-Ready")]},
+    "shrink": {"model": "BIS-SW",
+               "badges": [("12", "/min", "Packs"), ("24", "pack", "Max Size"), ("POF", "LDPE", "Film"), ("PLC", "", "Control")],
+               "features": [("gear", "Web Sealer + Tunnel"), ("leaf", "Energy Saving"), ("shield", "Tight Uniform Wrap"), ("wrench", "Low Upkeep")]},
+    "ink": {"model": "BIS-BC",
+            "badges": [("4", "Lines", "Print"), ("CIJ", "DOD", "Technology"), ("HD", "", "Resolution"), ("Fast", "Dry", "Ink")],
+            "features": [("bolt", "Non-Contact"), ("clock", "Fast-Drying"), ("barcode", "Logo + Barcode"), ("wrench", "Low Maintenance")]},
+}
+
 APPLICATIONS = ["Packaged Drinking Water Plants", "Mineral Water Bottling Units",
                 "Beverage &amp; Juice Filling Lines", "Carbonated Soft Drink Plants",
                 "Dairy &amp; Liquid Packaging", "Distributors, Dealers &amp; OEM Buyers"]
@@ -216,15 +266,28 @@ p { margin:0; }
 
 /* ---------- PRODUCT ---------- */
 .prod { position:relative; padding-top:2mm; }
-.bignum { position:absolute; top:-8mm; right:-2mm; font-family:'Playfair Display'; font-weight:900;
-  font-size:78pt; color:#EFEBE1; line-height:1; z-index:0; }
+.bignum { position:absolute; top:20mm; right:0; font-family:'Playfair Display'; font-weight:900;
+  font-size:74pt; color:#F0ECE2; line-height:1; z-index:0; }
 .prod .cat, .prod h2, .prod .lead { position:relative; z-index:1; }
 .prod h2 { font-size:28pt; font-weight:800; max-width:150mm; margin:3mm 0; }
 .prod .lead { color:#5F6E76; font-size:11pt; max-width:150mm; margin-bottom:6mm; }
-.frame { border:1px solid #E5E0D6; background:#fff; padding:5mm; height:86mm; display:flex; align-items:center; justify-content:center; }
+.phead { display:flex; justify-content:space-between; align-items:center; position:relative; z-index:1; }
+.model { font-family:'IBM Plex Mono'; font-size:8pt; letter-spacing:1px; color:#16232B; border:1px solid #16232B;
+  border-radius:20px; display:inline-flex; align-items:center; overflow:hidden; padding-right:4mm; }
+.model b { background:#0F5F6B; color:#fff; padding:2mm 3mm; margin-right:3mm; font-weight:600; letter-spacing:1.5px; }
+.frame { border:1px solid #E5E0D6; background:#fff; padding:5mm; height:60mm; display:flex; align-items:center; justify-content:center; position:relative; z-index:1; }
 .frame img { max-width:100%; max-height:100%; object-fit:contain; }
 .frame svg { width:100%; height:100%; }
-.pmeta { display:flex; gap:12mm; margin-top:7mm; }
+.badges { display:flex; gap:4mm; margin-top:5mm; }
+.badge { flex:1; background:#EAF3F4; border:1px solid #D6E7E9; border-radius:10px; padding:4mm 2mm; text-align:center; }
+.badge .bv { font-family:'Playfair Display'; font-weight:800; font-size:18pt; color:#0F5F6B; line-height:1; }
+.badge .bv span { font-family:'IBM Plex Mono'; font-size:7.5pt; color:#2E8896; margin-left:1mm; font-weight:600; }
+.badge .bl { font-family:'IBM Plex Mono'; font-size:6.5pt; letter-spacing:1px; text-transform:uppercase; color:#5F6E76; margin-top:2mm; }
+.fchips { display:flex; gap:4mm; margin-top:6mm; border-top:1px solid #E5E0D6; padding-top:5mm; }
+.fchip { flex:1; display:flex; align-items:center; gap:2.5mm; }
+.fchip svg { width:8mm; height:8mm; flex:none; color:#0F5F6B; background:#EAF3F4; border-radius:8px; padding:1.6mm; }
+.fchip span { font-size:8pt; font-weight:600; color:#16232B; line-height:1.15; }
+.pmeta { display:flex; gap:12mm; margin-top:6mm; }
 .pmeta .col { flex:1; }
 .lbl { font-family:'IBM Plex Mono'; font-size:7.5pt; letter-spacing:2px; text-transform:uppercase; color:#0F5F6B;
   border-bottom:1px solid #16232B; padding-bottom:2mm; margin-bottom:3mm; }
@@ -321,19 +384,28 @@ def _divider(num, kicker, title, sub):
 
 
 def _product(idx, p):
+    ex = EXTRA.get(p["key"], {})
+    model = ex.get("model", "")
+    model_html = f'<span class="model"><b>MODEL</b>{model}</span>' if model else ''
+    badges = "".join(
+        f'<div class="badge"><div class="bv">{v}{f"<span>{u}</span>" if u else ""}</div><div class="bl">{l}</div></div>'
+        for v, u, l in ex.get("badges", []))
+    chips = "".join(f'<div class="fchip">{icon(ic)}<span>{lab}</span></div>' for ic, lab in ex.get("features", []))
     specs = "".join(f'<tr><td class="k">{k}</td><td class="v">{v}</td></tr>' for k, v in p["specs"])
     feats = "".join(f'<li>{h}</li>' for h in p["hl"])
     return f"""
 <section class="pb prod">
   <div class="bignum">{idx:02d}</div>
-  <div class="kick">{p['cat']}</div>
+  <div class="phead"><div class="kick">{p['cat']}</div>{model_html}</div>
   <h2>{p['name']}</h2>
   <div class="lead">{p['lead']}</div>
   <div class="frame">{_visual(p['key'])}</div>
+  <div class="badges">{badges}</div>
   <div class="pmeta">
     <div class="col"><div class="lbl">Specifications</div><table class="spec">{specs}</table></div>
     <div class="col"><div class="lbl">Highlights</div><ul class="hl">{feats}</ul></div>
   </div>
+  <div class="fchips">{chips}</div>
 </section>"""
 
 
