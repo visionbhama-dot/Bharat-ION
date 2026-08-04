@@ -71,6 +71,23 @@ def _svg(key):
     return ""
 
 
+def _product_photo(key):
+    """Real bundled product photo (quote-app/assets/products/<key>.*), if present."""
+    for ext in (".jpg", ".jpeg", ".png", ".webp"):
+        p = os.path.join(ASSETS, "products", str(key) + ext)
+        if os.path.exists(p):
+            return p
+    return None
+
+
+def _visual(key):
+    """Use a real photo when available, else the vector illustration."""
+    photo = _product_photo(key)
+    if photo:
+        return f'<img class="pphoto" src="{_fileuri(photo)}" alt="">'
+    return _svg(key)
+
+
 # ---- Catalogue content ----
 COMPANY = {
     "name": "Bharat iON Systems Pvt. Ltd.",
@@ -265,6 +282,7 @@ h1,h2,h3,h4 { font-family:'Poppins',sans-serif; margin:0; color:#08214E; line-he
 .pvisual { background:linear-gradient(180deg,#F3FAFD,#DCF0F7); border:1px solid #E2E8F2; border-radius:16px;
   padding:6mm; height:78mm; display:flex; align-items:center; justify-content:center; }
 .pvisual svg { width:100%; height:100%; }
+.pvisual .pphoto { width:100%; height:100%; object-fit:contain; border-radius:10px; }
 .pcols { display:flex; gap:7mm; margin-top:6mm; }
 .pcols .box { flex:1; }
 .pcols h3 { font-size:11pt; color:#08214E; margin-bottom:3mm; padding-bottom:2mm; border-bottom:2px solid #1656C4; display:inline-block; }
@@ -374,7 +392,7 @@ def _product(p):
   <span class="ptag">{p['cat']}</span>
   <h2>{p['name']}</h2>
   <div class="lead">{p['lead']}</div>
-  <div class="pvisual">{_svg(p['key'])}</div>
+  <div class="pvisual">{_visual(p['key'])}</div>
   <div class="pcols">
     <div class="box"><h3>Key Specifications</h3>
       <table class="spec">{specs}</table></div>
