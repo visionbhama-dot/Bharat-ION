@@ -263,6 +263,15 @@ def prodimg(key):
     return send_file(p)
 
 
+@app.route("/catalogue")
+def catalogue():
+    """Generate and download the full product catalogue PDF."""
+    import catalogue_render as cat
+    pdf = cat.render_catalogue_pdf()
+    return send_file(_bio(pdf), mimetype="application/pdf", as_attachment=True,
+                     download_name="Bharat-iON-Systems-Catalogue.pdf")
+
+
 @app.route("/preview", methods=["POST"])
 def preview():
     data = _build_data_from_form()

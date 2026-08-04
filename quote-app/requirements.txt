@@ -3,3 +3,4 @@ weasyprint>=60
 pikepdf>=8
 pymupdf>=1.24
 gunicorn>=21
+qrcode[pil]>=7
