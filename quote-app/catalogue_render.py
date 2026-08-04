@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 """
-Bharat iON Systems - Product Catalogue (editorial / premium magazine style)
----------------------------------------------------------------------------
-A distinct design from the website: warm paper background, Playfair Display
-serif headings, IBM Plex Mono labels, hairline rules, large faint index
-numerals, rectangular photo frames and a dark back cover. Rendered with
-WeasyPrint. Run standalone to write ../assets/catalogue.pdf.
+Bharat iON Systems - Product Catalogue (bold full-bleed blue poster style)
+--------------------------------------------------------------------------
+Each page is a full-bleed brand-blue poster: wordmark + TYPE badge, big bold
+title, large product photo card, bright stat tiles, feature icon tiles and a
+short description. Rendered with WeasyPrint.
 """
 import os
 import base64
@@ -30,8 +29,8 @@ def _fileuri(path):
     return "file://" + os.path.abspath(path) if path and os.path.exists(path) else ""
 
 
-def _root_asset(*parts):
-    return os.path.join(BASE, "..", "assets", *parts)
+def _root_asset(*p):
+    return os.path.join(BASE, "..", "assets", *p)
 
 
 def _logo():
@@ -58,9 +57,7 @@ def _svg(key):
 
 def _visual(key):
     photo = _product_photo(key)
-    if photo:
-        return f'<img src="{_fileuri(photo)}" alt="">'
-    return _svg(key)
+    return f'<img src="{_fileuri(photo)}" alt="">' if photo else _svg(key)
 
 
 def _banner():
@@ -72,7 +69,7 @@ def _banner():
     return _product_photo("ro")
 
 
-def _qr_data_uri(text):
+def _qr(text):
     try:
         import qrcode, io
         buf = io.BytesIO()
@@ -82,80 +79,6 @@ def _qr_data_uri(text):
         return ""
 
 
-# ---- Content ----
-COMPANY = {
-    "name": "Bharat iON Systems Pvt. Ltd.",
-    "tag": "Water Treatment &amp; Bottle Packaging Machinery",
-    "phone": "+91 83840 61695",
-    "email": "info@bharationsystems.com",
-    "web": "www.bharationsystems.com",
-    "addr": "2882, 1st Floor, Karheda, Ghaziabad, Uttar Pradesh 201007",
-}
-
-STATS = [("RO&rarr;Pack", "Complete turnkey line"), ("6000", "Bottles per hour, up to"),
-         ("09", "Core machines"), ("Pan-India", "Service &amp; spares")]
-
-PROCESS = [("1", "RO Purification"), ("2", "PET Blowing"), ("3", "Filling &amp; Capping"),
-           ("4", "Labelling"), ("5", "Batch Coding"), ("6", "Shrink Packing")]
-
-PRODUCTS = [
-    {"key": "semi", "cat": "PET Bottle Manufacturing", "name": "Semi-Automatic PET Blowing Machine",
-     "lead": "Dependable auto-drop stretch blow moulding for start-ups and growing plants.",
-     "specs": [("Mould Cavities", "1 / 2"), ("Bottle Volume", "100 ml &ndash; 2 Litre"),
-               ("Output", "1000 &ndash; 1200 BPH"), ("Clamping Force", "8 Ton"),
-               ("Blowing Pressure", "18 &ndash; 26 kg/cm&sup2;"), ("Operation", "Hydro-Pneumatic")],
-     "hl": ["Auto-drop preform system", "Infrared conveyor heating", "Quick mould changeover", "Compact, low-power footprint"]},
-    {"key": "handblow", "cat": "PET Bottle Manufacturing", "name": "Hand-Feed Automatic PET Blowing Machine",
-     "lead": "Automatic blow cycle with simple manual preform feeding \u2014 more output at low cost.",
-     "specs": [("Mould Cavities", "2 / 4"), ("Bottle Volume", "100 ml &ndash; 2 Litre"),
-               ("Output", "1800 &ndash; 2500 BPH"), ("Heating", "Infrared Oven"),
-               ("Clamping", "Hydraulic"), ("Power", "12 &ndash; 18 kW")],
-     "hl": ["Fully automatic blow cycle", "Manual feed keeps cost low", "Uniform wall thickness", "Simple, robust operation"]},
-    {"key": "full", "cat": "PET Bottle Manufacturing", "name": "Fully Automatic PET Blowing Machine",
-     "lead": "High-speed servo blow moulding with automatic preform loading for large plants.",
-     "specs": [("Mould Cavities", "2 / 4 / 6"), ("Bottle Volume", "200 ml &ndash; 2 Litre"),
-               ("Output", "Up to 4000 &ndash; 6000 BPH"), ("Drive", "Servo"),
-               ("Control", "PLC + HMI"), ("Feeding", "Automatic Preform Feeder")],
-     "hl": ["Servo stretch-blow system", "Rotary / linear options", "Air recovery for efficiency", "Consistent high-volume output"]},
-    {"key": "ro", "cat": "Water Treatment", "name": "Industrial RO Water Treatment Plant",
-     "lead": "Multi-stage reverse osmosis for safe, IS 10500-grade packaged drinking water.",
-     "specs": [("Capacity", "250 &ndash; 10,000 LPH"), ("Pre-treatment", "Multimedia + Carbon + Softener"),
-               ("Membranes", "Spiral-wound TFC"), ("Dosing", "Antiscalant + Chlorine"),
-               ("Body", "SS / FRP"), ("Options", "UV + Ozone")],
-     "hl": ["Turnkey plant sizing", "High recovery, low rejection", "Automatic operation &amp; controls", "Ozonation &amp; UV polishing options"]},
-    {"key": "station", "cat": "Filling &amp; Capping", "name": "Station Filler (Bottle Filling Machine)",
-     "lead": "Economical multi-head filling for small and medium bottling lines.",
-     "specs": [("Filling Heads", "4 &ndash; 8"), ("Bottle Volume", "200 ml &ndash; 5 Litre"),
-               ("Output", "500 &ndash; 1500 BPH"), ("Fill Type", "Gravity / Volumetric"),
-               ("Contact Parts", "SS 304 / 316"), ("Capping", "Manual / Semi-auto")],
-     "hl": ["Hygienic stainless build", "Drip-free filling nozzles", "Adjustable fill volume", "Easy to clean &amp; maintain"]},
-    {"key": "fill", "cat": "Filling &amp; Capping", "name": "Fully Automatic Rinsing, Filling &amp; Capping Machine",
-     "lead": "A 3-in-1 monobloc that rinses, fills and caps in one hygienic, high-speed operation.",
-     "specs": [("Configuration", "24-18-6 / customisable"), ("Output", "2000 &ndash; 6000 BPH"),
-               ("Bottle Volume", "200 ml &ndash; 2 Litre"), ("Rinsing", "Gripper type"),
-               ("Capping", "Magnetic torque head"), ("Contact Parts", "SS 304 / 316")],
-     "hl": ["Single synchronised monobloc", "No-bottle / no-fill sensing", "CIP-ready hygienic design", "Smooth, high-speed handling"]},
-    {"key": "label", "cat": "Labelling", "name": "Automatic Sticker Labelling Machine",
-     "lead": "Servo-controlled self-adhesive labelling for crisp, consistent branding.",
-     "specs": [("Output", "Up to 6000 BPH"), ("Label Material", "OPP / BOPP / Paper"),
-               ("Bottle Shape", "Round"), ("Accuracy", "&plusmn; 1 mm"),
-               ("Control", "Servo + PLC"), ("Add-on", "Online date/batch coder")],
-     "hl": ["Wrinkle-free application", "Fast, tool-less changeover", "Wrap-around &amp; front/back", "Integrates with coding"]},
-    {"key": "shrink", "cat": "Secondary Packaging", "name": "Automatic Shrink Wrapping Machine",
-     "lead": "Groups bottles into transport-ready multi-packs through a heat-shrink tunnel.",
-     "specs": [("Film", "LDPE / POF"), ("Output", "Up to 12 packs / min"),
-               ("Pack Sizes", "6 / 12 / 24"), ("Tunnel", "SS heat chamber"),
-               ("Control", "PLC"), ("Sealing", "Web sealer")],
-     "hl": ["Web sealer + shrink tunnel", "Adjustable pack sizes", "Uniform, tight wrap", "Energy-efficient heating"]},
-    {"key": "ink", "cat": "Coding &amp; Marking", "name": "Batch Coding Machine",
-     "lead": "High-resolution coding of batch, MFG/EXP dates and MRP at full line speed.",
-     "specs": [("Type", "Inkjet (CIJ / DOD)"), ("Print Lines", "1 &ndash; 4"),
-               ("Speed", "Line-synchronised"), ("Ink", "Food-grade, fast-dry"),
-               ("Interface", "Touchscreen"), ("Codes", "Text / Logo / Barcode")],
-     "hl": ["Non-contact printing", "Fast-drying inks", "Logo &amp; barcode support", "Low maintenance"]},
-]
-
-# ---- Icon set (simple line icons, stroke = currentColor) ----
 ICONS = {
     "bolt": "<path d='M13 3 6 13h5l-1 8 8-12h-5z'/>",
     "gauge": "<path d='M4 15a8 8 0 0 1 16 0'/><path d='M12 15l4-4'/><circle cx='12' cy='15' r='1'/>",
@@ -170,46 +93,91 @@ ICONS = {
 
 
 def icon(name):
-    return (f"<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' "
+    return (f"<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.9' "
             f"stroke-linecap='round' stroke-linejoin='round'>{ICONS.get(name, '')}</svg>")
 
 
-# ---- Extra marketing data per product (model, headline stats, feature chips) ----
+COMPANY = {
+    "name": "Bharat iON Systems Pvt. Ltd.", "tag": "Water Treatment & Bottle Packaging Machinery",
+    "phone": "+91 83840 61695", "email": "info@bharationsystems.com",
+    "web": "www.bharationsystems.com", "addr": "2882, 1st Floor, Karheda, Ghaziabad, Uttar Pradesh 201007",
+}
+STATS = [("RO&rarr;Pack", "Complete line"), ("6000", "BPH, up to"), ("09", "Core machines"), ("Pan-India", "Service")]
+PROCESS = [("1", "RO Purification"), ("2", "PET Blowing"), ("3", "Filling &amp; Capping"),
+           ("4", "Labelling"), ("5", "Batch Coding"), ("6", "Shrink Packing")]
+
+PRODUCTS = [
+    {"key": "semi", "cat": "PET Bottle Manufacturing", "name": "Semi-Automatic PET Blowing Machine",
+     "lead": "A dependable auto-drop stretch blow moulding machine for start-ups and growing plants \u2014 hygienic PET bottles with a compact footprint and low running cost.",
+     "specs": [("Mould Cavities", "1 / 2"), ("Bottle Volume", "100 ml &ndash; 2 L"), ("Output", "1000 &ndash; 1200 BPH"),
+               ("Clamping Force", "8 Ton"), ("Blowing Pressure", "18 &ndash; 26 kg/cm&sup2;"), ("Operation", "Hydro-Pneumatic")]},
+    {"key": "handblow", "cat": "PET Bottle Manufacturing", "name": "Hand-Feed Automatic PET Blowing Machine",
+     "lead": "An automatic blow cycle with simple manual preform feeding \u2014 higher output at low cost with consistent bottle quality.",
+     "specs": [("Mould Cavities", "2 / 4"), ("Bottle Volume", "100 ml &ndash; 2 L"), ("Output", "1800 &ndash; 2500 BPH"),
+               ("Heating", "Infrared Oven"), ("Clamping", "Hydraulic"), ("Power", "12 &ndash; 18 kW")]},
+    {"key": "full", "cat": "PET Bottle Manufacturing", "name": "Fully Automatic PET Blowing Machine",
+     "lead": "High-speed servo blow moulding with automatic preform loading for large plants \u2014 built for consistent, high-volume production.",
+     "specs": [("Mould Cavities", "2 / 4 / 6"), ("Bottle Volume", "200 ml &ndash; 2 L"), ("Output", "Up to 6000 BPH"),
+               ("Drive", "Servo"), ("Control", "PLC + HMI"), ("Feeding", "Auto Preform Feeder")]},
+    {"key": "ro", "cat": "Water Treatment", "name": "Industrial RO Water Treatment Plant",
+     "lead": "Multi-stage reverse osmosis for safe, IS 10500-grade packaged drinking water \u2014 turnkey plants sized to your capacity with automatic operation.",
+     "specs": [("Capacity", "250 &ndash; 10,000 LPH"), ("Pre-treatment", "MMF + Carbon + Softener"), ("Membranes", "Spiral-wound TFC"),
+               ("Dosing", "Antiscalant + Chlorine"), ("Body", "SS / FRP"), ("Options", "UV + Ozone")]},
+    {"key": "station", "cat": "Filling & Capping", "name": "Station Filler (Bottle Filling Machine)",
+     "lead": "Economical multi-head filling for small and medium bottling lines \u2014 hygienic stainless build with drip-free, adjustable filling.",
+     "specs": [("Filling Heads", "4 &ndash; 8"), ("Bottle Volume", "200 ml &ndash; 5 L"), ("Output", "500 &ndash; 1500 BPH"),
+               ("Fill Type", "Gravity / Volumetric"), ("Contact Parts", "SS 304 / 316"), ("Capping", "Manual / Semi-auto")]},
+    {"key": "fill", "cat": "Filling & Capping", "name": "Automatic Rinsing Filling & Capping Machine",
+     "lead": "A 3-in-1 monobloc that rinses, fills and caps in one hygienic, high-speed operation \u2014 the heart of a modern bottling line.",
+     "specs": [("Configuration", "24-18-6 / custom"), ("Output", "2000 &ndash; 6000 BPH"), ("Bottle Volume", "200 ml &ndash; 2 L"),
+               ("Rinsing", "Gripper type"), ("Capping", "Magnetic torque"), ("Contact Parts", "SS 304 / 316")]},
+    {"key": "label", "cat": "Labelling", "name": "Automatic Sticker Labelling Machine",
+     "lead": "Servo-controlled self-adhesive labelling for crisp, consistent branding \u2014 wrinkle-free application at high speed.",
+     "specs": [("Output", "Up to 6000 BPH"), ("Label Material", "OPP / BOPP / Paper"), ("Bottle Shape", "Round"),
+               ("Accuracy", "&plusmn; 1 mm"), ("Control", "Servo + PLC"), ("Add-on", "Online coder")]},
+    {"key": "shrink", "cat": "Secondary Packaging", "name": "Automatic Shrink Wrapping Machine",
+     "lead": "Groups bottles into transport-ready multi-packs through a heat-shrink tunnel \u2014 tight, uniform wraps with energy-efficient heating.",
+     "specs": [("Film", "LDPE / POF"), ("Output", "Up to 12 packs/min"), ("Pack Sizes", "6 / 12 / 24"),
+               ("Tunnel", "SS heat chamber"), ("Control", "PLC"), ("Sealing", "Web sealer")]},
+    {"key": "ink", "cat": "Coding & Marking", "name": "Batch Coding Machine",
+     "lead": "High-resolution non-contact coding of batch, MFG/EXP dates and MRP at full line speed \u2014 fast-drying, food-grade inks.",
+     "specs": [("Type", "Inkjet (CIJ / DOD)"), ("Print Lines", "1 &ndash; 4"), ("Speed", "Line-synced"),
+               ("Ink", "Food-grade, fast-dry"), ("Interface", "Touchscreen"), ("Codes", "Text / Logo / Barcode")]},
+]
+
 EXTRA = {
     "semi": {"model": "BIS-SB2",
-             "badges": [("1200", "BPH", "Max Output"), ("2", "L", "Max Bottle"), ("2", "Cav.", "Mould"), ("8", "Ton", "Clamping")],
+             "badges": [("1200", "BPH", "Max Output"), ("8", "Ton", "Clamping")],
              "features": [("gear", "Auto-Drop System"), ("bolt", "Low Power Use"), ("clock", "Quick Mould Change"), ("shield", "1-Year Warranty")]},
     "handblow": {"model": "BIS-HB4",
-                 "badges": [("2500", "BPH", "Max Output"), ("2", "L", "Max Bottle"), ("4", "Cav.", "Cavities"), ("18", "kW", "Power")],
-                 "features": [("gear", "Automatic Cycle"), ("bolt", "Cost-Efficient"), ("drop", "Even Wall Thickness"), ("wrench", "Easy Service")]},
+                 "badges": [("2500", "BPH", "Max Output"), ("4", "Cav.", "Cavities")],
+                 "features": [("gear", "Automatic Cycle"), ("bolt", "Cost-Efficient"), ("drop", "Even Walls"), ("wrench", "Easy Service")]},
     "full": {"model": "BIS-FA6",
-             "badges": [("6000", "BPH", "Max Output"), ("6", "Cav.", "Cavities"), ("2", "L", "Max Bottle"), ("PLC", "+HMI", "Control")],
+             "badges": [("6000", "BPH", "Max Output"), ("6", "Cav.", "Cavities")],
              "features": [("gear", "Servo Stretch-Blow"), ("leaf", "Air Recovery"), ("bolt", "High Speed"), ("shield", "Robust Build")]},
     "ro": {"model": "BIS-RO",
-           "badges": [("10,000", "LPH", "Max Capacity"), ("4+", "Stage", "Pre-treatment"), ("UV+O&#8323;", "", "Polishing"), ("24&times;7", "", "Operation")],
-           "features": [("drop", "IS 10500 Water"), ("gear", "Automatic Controls"), ("leaf", "High Recovery"), ("shield", "SS / FRP Build")]},
+           "badges": [("10000", "LPH", "Max Capacity"), ("4+", "Stage", "Pre-treatment")],
+           "features": [("drop", "IS 10500 Water"), ("gear", "Auto Controls"), ("leaf", "High Recovery"), ("shield", "SS / FRP Build")]},
     "station": {"model": "BIS-SF8",
-                "badges": [("1500", "BPH", "Max Output"), ("8", "Head", "Filling"), ("5", "L", "Max Bottle"), ("SS", "304/316", "Contact")],
+                "badges": [("1500", "BPH", "Max Output"), ("8", "Head", "Filling")],
                 "features": [("drop", "Drip-Free Nozzles"), ("gear", "Adjustable Fill"), ("shield", "Hygienic Build"), ("wrench", "Easy to Clean")]},
     "fill": {"model": "BIS-RFC",
-             "badges": [("6000", "BPH", "Max Output"), ("3-in-1", "", "Monobloc"), ("2", "L", "Max Bottle"), ("CIP", "Ready", "Hygiene")],
-             "features": [("gear", "Synchronised Monobloc"), ("drop", "No-Bottle / No-Fill"), ("shield", "SS 304 / 316"), ("clock", "High-Speed")]},
+             "badges": [("6000", "BPH", "Max Output"), ("3-in-1", "", "Monobloc")],
+             "features": [("gear", "Synchronised"), ("drop", "No-Bottle No-Fill"), ("shield", "SS 304 / 316"), ("clock", "High-Speed")]},
     "label": {"model": "BIS-LB",
-              "badges": [("6000", "BPH", "Max Output"), ("&plusmn;1", "mm", "Accuracy"), ("OPP", "BOPP", "Labels"), ("Servo", "", "Control")],
+              "badges": [("6000", "BPH", "Max Output"), ("&plusmn;1", "mm", "Accuracy")],
               "features": [("gear", "Servo Controlled"), ("bolt", "Wrinkle-Free"), ("clock", "Fast Changeover"), ("barcode", "Coder-Ready")]},
     "shrink": {"model": "BIS-SW",
-               "badges": [("12", "/min", "Packs"), ("24", "pack", "Max Size"), ("POF", "LDPE", "Film"), ("PLC", "", "Control")],
-               "features": [("gear", "Web Sealer + Tunnel"), ("leaf", "Energy Saving"), ("shield", "Tight Uniform Wrap"), ("wrench", "Low Upkeep")]},
+               "badges": [("12", "/min", "Packs"), ("24", "pack", "Max Size")],
+               "features": [("gear", "Web Sealer + Tunnel"), ("leaf", "Energy Saving"), ("shield", "Tight Wrap"), ("wrench", "Low Upkeep")]},
     "ink": {"model": "BIS-BC",
-            "badges": [("4", "Lines", "Print"), ("CIJ", "DOD", "Technology"), ("HD", "", "Resolution"), ("Fast", "Dry", "Ink")],
+            "badges": [("4", "Lines", "Print Lines"), ("HD", "", "Resolution")],
             "features": [("bolt", "Non-Contact"), ("clock", "Fast-Drying"), ("barcode", "Logo + Barcode"), ("wrench", "Low Maintenance")]},
 }
 
-APPLICATIONS = ["Packaged Drinking Water Plants", "Mineral Water Bottling Units",
-                "Beverage &amp; Juice Filling Lines", "Carbonated Soft Drink Plants",
-                "Dairy &amp; Liquid Packaging", "Distributors, Dealers &amp; OEM Buyers"]
-
-WHY = [("Single Accountable Partner", "One team supplies, installs and supports your entire line."),
+APPLICATIONS = ["Packaged Drinking Water Plants", "Mineral Water Bottling Units", "Beverage &amp; Juice Filling",
+                "Carbonated Soft Drink Plants", "Dairy &amp; Liquid Packaging", "Distributors, Dealers &amp; OEM"]
+WHY = [("Single Accountable Partner", "One team supplies, installs and supports your whole line."),
        ("Right-Sized For You", "Configurations matched to your output, budget and space."),
        ("Installation &amp; Training", "On-site commissioning and operator training included."),
        ("Genuine Spares &amp; Service", "Prompt after-sales support and authentic spare parts."),
@@ -218,237 +186,241 @@ WHY = [("Single Accountable Partner", "One team supplies, installs and supports 
 
 
 CSS = """
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
 * { box-sizing:border-box; }
-body { font-family:'Inter',sans-serif; color:#16232B; margin:0; font-size:10pt; line-height:1.6; background:#FBFAF7; }
-h1,h2,h3,h4 { font-family:'Playfair Display',Georgia,serif; color:#16232B; margin:0; line-height:1.08; font-weight:800; }
-p { margin:0; }
-.kick { font-family:'IBM Plex Mono',monospace; font-size:8pt; letter-spacing:2.5px; text-transform:uppercase; color:#0F5F6B; }
-.hr { height:1px; background:#E5E0D6; border:0; margin:8mm 0; }
+body { margin:0; font-family:'Inter',sans-serif; color:#fff; }
+h1,h2,h3 { font-family:'Poppins',sans-serif; margin:0; line-height:1.05; }
+@page { size:A4; margin:0; }
+.page { position:relative; width:210mm; height:297mm; overflow:hidden; padding:15mm 15mm 13mm;
+  background:linear-gradient(140deg,#071B44 0%,#0C336F 55%,#123E86 120%); color:#fff; }
+.pb { page-break-before:always; }
+.tex1 { position:absolute; top:-55mm; right:-45mm; width:170mm; height:170mm; background:rgba(255,255,255,.05); border-radius:34mm; transform:rotate(22deg); }
+.tex2 { position:absolute; bottom:-60mm; left:-45mm; width:150mm; height:150mm; border-radius:50%; background:rgba(46,116,232,.20); }
+.z { position:relative; z-index:2; height:100%; display:flex; flex-direction:column; }
 
-@page { size:A4; margin:22mm 18mm 18mm 18mm;
-  @top-left { content:"BHARAT iON SYSTEMS"; font-family:'IBM Plex Mono'; font-size:7pt; letter-spacing:1.5px; color:#0F5F6B; }
-  @top-right { content:"Product Catalogue \\2014 2026"; font-family:'IBM Plex Mono'; font-size:7pt; letter-spacing:1.5px; color:#A6ADA9; }
-  @bottom-left { content:"bharationsystems.com"; font-family:'IBM Plex Mono'; font-size:7pt; color:#A6ADA9; }
-  @bottom-right { content:counter(page,decimal-leading-zero); font-family:'IBM Plex Mono'; font-size:8pt; color:#16232B; }
-}
-@page cover { margin:0; @top-left{content:none} @top-right{content:none} @bottom-left{content:none} @bottom-right{content:none} }
-@page back  { margin:0; @top-left{content:none} @top-right{content:none} @bottom-left{content:none} @bottom-right{content:none} }
-.cover { page:cover; } .back { page:back; } .divider { page:cover; } .pb { page-break-before:always; }
+.wm { font-family:'Poppins'; font-weight:800; font-size:12pt; letter-spacing:.5px; color:#fff; }
+.wm em { color:#7FE0A0; font-style:normal; }
+.wm small { display:block; font-family:'Inter'; font-weight:500; font-size:7pt; letter-spacing:2px; color:#9DC4FF; text-transform:uppercase; }
+.tophead { display:flex; justify-content:space-between; align-items:center; }
+.type { display:inline-flex; align-items:stretch; border-radius:30px; overflow:hidden; font-family:'Poppins'; font-weight:700; font-size:8.5pt; border:1px solid rgba(255,255,255,.35); }
+.type b { background:#fff; color:#08214E; padding:2.4mm 5mm; letter-spacing:1px; }
+.type span { padding:2.4mm 6mm; color:#fff; letter-spacing:1.5px; }
 
-/* ---------- COVER (photo-led editorial) ---------- */
-.cover-wrap { width:210mm; height:297mm; background:#FBFAF7; display:flex; flex-direction:column; }
-.cover-photo { height:168mm; width:100%; object-fit:cover; display:block; }
-.cover-body { flex:1; padding:14mm 20mm 16mm; display:flex; flex-direction:column; }
-.cover-top { display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #E5E0D6; padding-bottom:5mm; margin-bottom:7mm; }
-.cover-top img { height:12mm; width:auto; }
-.cover-top .ed { font-family:'IBM Plex Mono'; font-size:8pt; letter-spacing:2px; color:#0F5F6B; text-transform:uppercase; }
-.cover-body h1 { font-size:38pt; font-weight:900; letter-spacing:-.5px; max-width:172mm; }
-.cover-body h1 em { font-style:italic; color:#0F5F6B; font-weight:700; }
-.cover-body .sub { margin-top:5mm; color:#5F6E76; font-size:11pt; max-width:150mm; }
-.cover-body .foot { margin-top:auto; display:flex; justify-content:space-between; align-items:flex-end;
-  font-family:'IBM Plex Mono'; font-size:8.5pt; color:#5F6E76; }
-.cover-body .foot b { color:#16232B; font-family:'Inter'; }
+.kick { font-family:'Poppins'; font-weight:700; letter-spacing:3px; font-size:8.5pt; text-transform:uppercase; color:#7FE0A0; }
+.ptitle { font-family:'Poppins'; font-weight:900; font-size:30pt; color:#fff; letter-spacing:-.5px; margin:3mm 0 0; max-width:120mm; }
+.ptitle em { color:#8FBEFF; font-style:normal; }
+.tagline { display:inline-block; margin-top:4mm; background:linear-gradient(90deg,rgba(255,255,255,.16),rgba(255,255,255,0)); border-left:3px solid #7FE0A0; padding:2.2mm 6mm; font-size:8.5pt; letter-spacing:2px; text-transform:uppercase; color:#dfeaff; }
 
-/* ---------- INTRO ---------- */
-.lead-serif { font-family:'Playfair Display',serif; font-weight:600; font-size:19pt; line-height:1.35; max-width:165mm; }
-.lead-serif em { font-style:italic; color:#0F5F6B; }
-.stat-row { display:flex; margin:9mm 0; }
-.stat-row .s { flex:1; padding:0 6mm; border-left:1px solid #E5E0D6; }
-.stat-row .s:first-child { padding-left:0; border-left:0; }
-.stat-row .s b { font-family:'Playfair Display'; font-size:20pt; font-weight:800; display:block; color:#0F5F6B; }
-.stat-row .s span { font-size:8.5pt; color:#5F6E76; }
-.tl { display:flex; justify-content:space-between; margin-top:7mm; }
-.tl .n { width:15%; text-align:center; }
-.tl .num { font-family:'IBM Plex Mono'; font-weight:600; font-size:9pt; color:#0F5F6B; border:1px solid #0F5F6B;
-  border-radius:50%; width:9mm; height:9mm; line-height:8.4mm; margin:0 auto 3mm; }
-.tl b { font-size:7.5pt; color:#16232B; font-weight:600; }
+.hero { display:flex; gap:8mm; margin-top:8mm; align-items:stretch; }
+.hero .left { width:44%; display:flex; flex-direction:column; gap:5mm; }
+.hero .right { flex:1; }
+.photocard { background:#fff; border-radius:16px; padding:6mm; height:96mm; display:flex; align-items:center; justify-content:center;
+  box-shadow:0 12px 30px rgba(0,0,0,.28); }
+.photocard img { max-width:100%; max-height:100%; object-fit:contain; }
+.photocard svg { width:100%; height:100%; }
 
-/* ---------- PRODUCT ---------- */
-.prod { position:relative; padding-top:2mm; }
-.bignum { position:absolute; top:20mm; right:0; font-family:'Playfair Display'; font-weight:900;
-  font-size:74pt; color:#F0ECE2; line-height:1; z-index:0; }
-.prod .cat, .prod h2, .prod .lead { position:relative; z-index:1; }
-.prod h2 { font-size:28pt; font-weight:800; max-width:150mm; margin:3mm 0; }
-.prod .lead { color:#5F6E76; font-size:11pt; max-width:150mm; margin-bottom:6mm; }
-.phead { display:flex; justify-content:space-between; align-items:center; position:relative; z-index:1; }
-.model { font-family:'IBM Plex Mono'; font-size:8pt; letter-spacing:1px; color:#16232B; border:1px solid #16232B;
-  border-radius:20px; display:inline-flex; align-items:center; overflow:hidden; padding-right:4mm; }
-.model b { background:#0F5F6B; color:#fff; padding:2mm 3mm; margin-right:3mm; font-weight:600; letter-spacing:1.5px; }
-.frame { border:1px solid #E5E0D6; background:#fff; padding:5mm; height:60mm; display:flex; align-items:center; justify-content:center; position:relative; z-index:1; }
-.frame img { max-width:100%; max-height:100%; object-fit:contain; }
-.frame svg { width:100%; height:100%; }
-.badges { display:flex; gap:4mm; margin-top:5mm; }
-.badge { flex:1; background:#EAF3F4; border:1px solid #D6E7E9; border-radius:10px; padding:4mm 2mm; text-align:center; }
-.badge .bv { font-family:'Playfair Display'; font-weight:800; font-size:18pt; color:#0F5F6B; line-height:1; }
-.badge .bv span { font-family:'IBM Plex Mono'; font-size:7.5pt; color:#2E8896; margin-left:1mm; font-weight:600; }
-.badge .bl { font-family:'IBM Plex Mono'; font-size:6.5pt; letter-spacing:1px; text-transform:uppercase; color:#5F6E76; margin-top:2mm; }
-.fchips { display:flex; gap:4mm; margin-top:6mm; border-top:1px solid #E5E0D6; padding-top:5mm; }
-.fchip { flex:1; display:flex; align-items:center; gap:2.5mm; }
-.fchip svg { width:8mm; height:8mm; flex:none; color:#0F5F6B; background:#EAF3F4; border-radius:8px; padding:1.6mm; }
-.fchip span { font-size:8pt; font-weight:600; color:#16232B; line-height:1.15; }
-.pmeta { display:flex; gap:12mm; margin-top:6mm; }
-.pmeta .col { flex:1; }
-.lbl { font-family:'IBM Plex Mono'; font-size:7.5pt; letter-spacing:2px; text-transform:uppercase; color:#0F5F6B;
-  border-bottom:1px solid #16232B; padding-bottom:2mm; margin-bottom:3mm; }
-.spec { width:100%; border-collapse:collapse; font-size:9.5pt; }
-.spec td { padding:2.5mm 0; border-bottom:1px solid #EFEBE2; }
-.spec td.k { color:#5F6E76; font-family:'IBM Plex Mono'; font-size:8.5pt; }
-.spec td.v { text-align:right; font-weight:600; color:#16232B; }
-.hl { list-style:none; margin:0; padding:0; }
-.hl li { padding:2.5mm 0 2.5mm 6mm; border-bottom:1px solid #EFEBE2; position:relative; font-size:10pt; color:#2b3942; }
-.hl li:before { content:"\\2014"; position:absolute; left:0; color:#0F5F6B; font-weight:700; }
+.stat { background:linear-gradient(160deg,#1C61D6,#1147A8); border:1px solid rgba(255,255,255,.28); border-radius:14px; padding:6mm 5mm; flex:1;
+  display:flex; flex-direction:column; justify-content:center; box-shadow:0 8px 18px rgba(0,0,0,.18); }
+.stat .v { font-family:'Poppins'; font-weight:900; font-size:32pt; color:#fff; line-height:.95; }
+.stat .v span { font-size:12pt; color:#BcD8FF; font-weight:700; margin-left:1.5mm; }
+.stat .l { font-size:8pt; letter-spacing:2px; text-transform:uppercase; color:#Bcd5f7; margin-top:3mm; }
+.stat .ln { width:14mm; height:3px; background:#7FE0A0; border-radius:2px; margin-top:4mm; }
+
+.feats { display:flex; gap:4mm; margin-top:7mm; }
+.feat { flex:1; background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.2); border-radius:13px; padding:4mm 3mm; text-align:center; }
+.feat .ic { width:11mm; height:11mm; border-radius:50%; background:rgba(143,190,255,.18); color:#8FBEFF; display:flex; align-items:center; justify-content:center; margin:0 auto 2.5mm; }
+.feat .ic svg { width:6mm; height:6mm; }
+.feat span { font-size:8pt; font-weight:600; color:#eaf1ff; line-height:1.2; }
+
+.specrow { display:flex; gap:7mm; margin-top:7mm; }
+.specpanel { flex:1; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.16); border-radius:13px; padding:5mm 6mm; }
+.specpanel .lbl { font-family:'Poppins'; font-weight:700; font-size:8pt; letter-spacing:2px; text-transform:uppercase; color:#7FE0A0; margin-bottom:3mm; }
+.spec2 { display:flex; gap:8mm; }
+.spec2 > div { flex:1; }
+.spec { width:100%; border-collapse:collapse; font-size:8.6pt; }
+.spec td { padding:2mm 0; border-bottom:1px solid rgba(255,255,255,.13); }
+.spec td.k { color:#Aec3e8; }
+.spec td.v { text-align:right; font-weight:700; color:#fff; }
+.desc { margin-top:auto; padding-top:6mm; display:flex; justify-content:space-between; align-items:flex-end; gap:10mm; }
+.desc p { font-size:9pt; color:#c8d7ef; max-width:120mm; line-height:1.55; margin:0; }
+.desc .web { font-family:'Poppins'; font-weight:700; font-size:8pt; color:#7FE0A0; white-space:nowrap; }
+
+/* ---------- COVER ---------- */
+.cover-hero { margin-top:7mm; height:110mm; border-radius:16px; overflow:hidden; box-shadow:0 16px 40px rgba(0,0,0,.35); border:1px solid rgba(255,255,255,.2); }
+.cover-hero img { width:100%; height:100%; object-fit:cover; display:block; }
+.cover h1 { font-family:'Poppins'; font-weight:900; font-size:40pt; letter-spacing:-1px; margin-top:6mm; max-width:175mm; }
+.cover h1 em { color:#8FBEFF; font-style:normal; }
+.cover .sub { color:#cfe0f5; font-size:11.5pt; margin-top:4mm; max-width:150mm; }
+.statrow { display:flex; gap:5mm; margin-top:auto; }
+.statrow .s { flex:1; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.2); border-radius:12px; padding:4.5mm 4mm; }
+.statrow .s b { font-family:'Poppins'; font-weight:800; font-size:15pt; display:block; color:#fff; }
+.statrow .s span { font-size:8pt; color:#B8CEF0; }
+.cover-foot { margin-top:6mm; display:flex; justify-content:space-between; border-top:1px solid rgba(255,255,255,.2); padding-top:5mm; font-size:9pt; color:#cfe0f5; }
+.cover-foot b { color:#fff; }
+
+/* ---------- SECTION / GENERIC ---------- */
+.big-title { font-family:'Poppins'; font-weight:900; font-size:34pt; margin:3mm 0; max-width:150mm; }
+.bar { width:24mm; height:4px; background:#7FE0A0; border-radius:3px; margin:4mm 0 7mm; }
+.lead-big { font-family:'Poppins'; font-weight:700; font-size:17pt; line-height:1.35; max-width:160mm; }
+.lead-big em { color:#8FBEFF; font-style:normal; }
+.tiles { display:flex; flex-wrap:wrap; gap:5mm; margin-top:8mm; }
+.tiles .t { width:calc(50% - 2.5mm); background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18); border-radius:13px; padding:6mm; display:flex; gap:5mm; align-items:flex-start; }
+.tiles .t .no { font-family:'Poppins'; font-weight:900; font-size:18pt; color:#8FBEFF; width:12mm; }
+.tiles .t h4 { font-family:'Poppins'; font-weight:700; font-size:11.5pt; color:#fff; }
+.tiles .t p { font-size:8.8pt; color:#c2d3ee; margin:1.5mm 0 0; }
+.applist2 { display:flex; flex-wrap:wrap; gap:5mm; margin-top:8mm; }
+.applist2 .a { width:calc(50% - 2.5mm); background:rgba(255,255,255,.08); border-left:4px solid #7FE0A0; border-radius:10px; padding:5mm 6mm; font-family:'Poppins'; font-weight:600; font-size:12pt; }
+.flowrow { display:flex; justify-content:space-between; margin-top:9mm; }
+.flowrow .n { text-align:center; width:15%; }
+.flowrow .dot { width:15mm; height:15mm; border-radius:50%; background:linear-gradient(160deg,#1C61D6,#1147A8); border:2px solid rgba(255,255,255,.35);
+  font-family:'Poppins'; font-weight:800; font-size:15pt; display:flex; align-items:center; justify-content:center; margin:0 auto 3mm; }
+.flowrow b { font-size:8pt; color:#dfeaff; }
+.statrow2 { display:flex; gap:5mm; margin-top:9mm; }
+.statrow2 .s { flex:1; background:linear-gradient(160deg,#1C61D6,#1147A8); border:1px solid rgba(255,255,255,.25); border-radius:13px; padding:5mm; text-align:center; }
+.statrow2 .s b { font-family:'Poppins'; font-weight:900; font-size:19pt; display:block; }
+.statrow2 .s span { font-size:8pt; color:#Bcd6ff; }
 
 /* ---------- DIVIDER ---------- */
-.divider-wrap { width:210mm; height:297mm; background:#FBFAF7; padding:0 26mm; display:flex; flex-direction:column;
-  justify-content:center; position:relative; }
-.divider-wrap .bg { position:absolute; top:34mm; right:22mm; font-family:'Playfair Display'; font-weight:900;
-  font-size:150pt; color:#EFEBE1; line-height:1; }
-.divider-wrap h2 { font-size:42pt; font-weight:900; max-width:150mm; margin-top:4mm; }
-.divider-wrap .r { width:24mm; height:2px; background:#0F5F6B; margin-top:6mm; }
-.divider-wrap p { color:#5F6E76; margin-top:5mm; max-width:130mm; font-size:11.5pt; }
+.divnum { position:absolute; top:40mm; right:16mm; font-family:'Poppins'; font-weight:900; font-size:150pt; color:rgba(255,255,255,.07); z-index:1; }
 
-/* ---------- APPLICATIONS / WHY (editorial lists) ---------- */
-.applist { margin-top:8mm; }
-.applist .a { display:flex; align-items:baseline; gap:6mm; padding:4.5mm 0; border-bottom:1px solid #E5E0D6; }
-.applist .a .no { font-family:'IBM Plex Mono'; color:#0F5F6B; font-size:9pt; width:8mm; }
-.applist .a .t { font-family:'Playfair Display'; font-size:15pt; font-weight:700; color:#16232B; }
-.why { margin-top:6mm; }
-.why .w { display:flex; gap:7mm; padding:5mm 0; border-bottom:1px solid #E5E0D6; }
-.why .w .no { font-family:'Playfair Display'; font-weight:800; font-size:20pt; color:#E1DACB; width:14mm; }
-.why .w h4 { font-family:'Playfair Display'; font-size:13pt; font-weight:700; }
-.why .w p { color:#5F6E76; font-size:9.5pt; margin-top:1mm; }
-
-/* ---------- BACK COVER (dark) ---------- */
-.back-wrap { width:210mm; height:297mm; background:#10222A; color:#fff; padding:26mm 22mm; display:flex; flex-direction:column; }
-.back-wrap .wm { font-family:'Playfair Display'; font-weight:800; font-size:15pt; color:#fff; letter-spacing:.5px; }
-.back-wrap .wm em { color:#7FD0D9; font-style:italic; }
-.back-wrap .k { color:#4FB3C0; margin-top:12mm; }
-.back-wrap h2 { color:#fff; font-size:34pt; font-weight:900; margin-top:4mm; max-width:150mm; }
-.back-wrap h2 em { font-style:italic; color:#7FD0D9; }
-.back-wrap .p { color:#b8c6cc; font-size:11.5pt; margin-top:4mm; max-width:150mm; }
-.back-cta { display:inline-block; margin-top:8mm; border:1.5px solid #4FB3C0; color:#fff; font-family:'IBM Plex Mono';
-  letter-spacing:1px; padding:4mm 8mm; font-size:9.5pt; text-transform:uppercase; }
-.back-contact { margin-top:auto; display:flex; justify-content:space-between; align-items:flex-end;
-  border-top:1px solid rgba(255,255,255,.18); padding-top:6mm; }
-.back-contact .info div { font-family:'IBM Plex Mono'; font-size:9pt; color:#cdd8dc; margin:1.8mm 0; }
-.back-contact .info b { color:#fff; font-family:'Inter'; }
+/* ---------- BACK ---------- */
+.back h2 { font-family:'Poppins'; font-weight:900; font-size:34pt; margin-top:6mm; max-width:150mm; }
+.back h2 em { color:#7FE0A0; font-style:normal; }
+.back .p { color:#cfe0f5; font-size:11.5pt; margin-top:4mm; max-width:150mm; }
+.back-cta { display:inline-block; margin-top:8mm; background:#E23127; color:#fff; font-family:'Poppins'; font-weight:700; padding:5mm 11mm; border-radius:10px; font-size:12pt; }
+.back-contact { margin-top:auto; display:flex; justify-content:space-between; align-items:flex-end; border-top:1px solid rgba(255,255,255,.2); padding-top:6mm; }
+.back-contact .info div { font-size:10pt; color:#e6eefb; margin:2mm 0; }
+.back-contact .info b { color:#fff; }
 .qr { text-align:center; }
-.qr img { width:28mm; height:28mm; background:#fff; padding:2mm; border-radius:4px; }
-.qr span { display:block; font-family:'IBM Plex Mono'; font-size:7pt; color:#9fb0b6; margin-top:2mm; }
+.qr img { width:30mm; height:30mm; background:#fff; padding:2mm; border-radius:8px; }
+.qr span { display:block; font-size:7.5pt; color:#cfe0f5; margin-top:2mm; }
 """
 
 
+def _wm():
+    return '<div class="wm">BHARAT <em>iON</em> SYSTEMS<small>Water &amp; Packaging Machinery</small></div>'
+
+
 def _cover():
-    logo = _logo()
     banner = _banner()
-    logo_img = f'<img src="{_fileuri(logo)}" alt="">' if logo else f'<span class="ed">{COMPANY["name"]}</span>'
-    photo = f'<img class="cover-photo" src="{_fileuri(banner)}" alt="">' if banner else '<div class="cover-photo" style="background:#10222A"></div>'
+    hero = f'<div class="cover-hero"><img src="{_fileuri(banner)}" alt=""></div>' if banner else ''
+    stats = "".join(f'<div class="s"><b>{a}</b><span>{b}</span></div>' for a, b in STATS)
     return f"""
-<div class="cover"><div class="cover-wrap">
-  {photo}
-  <div class="cover-body">
-    <div class="cover-top">{logo_img}<span class="ed">Product Catalogue &middot; Edition 2026</span></div>
-    <h1>Machinery for <em>Water &amp; Beverage</em> Packaging</h1>
-    <div class="sub">Reverse-osmosis purification, PET bottle blowing, filling &amp; capping, labelling, coding and shrink packaging &mdash; supplied as individual machines or a fully integrated turnkey line.</div>
-    <div class="foot"><div><b>{COMPANY['name']}</b> &nbsp;&middot;&nbsp; {COMPANY['tag']}</div><div>{COMPANY['phone']}</div></div>
-  </div>
+<div class="page cover"><div class="tex1"></div><div class="tex2"></div><div class="z">
+  <div class="tophead">{_wm()}<span class="type"><b>CATALOGUE</b><span>EDITION 2026</span></span></div>
+  <h1>Complete <em>Water Bottling</em><br>&amp; Packaging Machinery</h1>
+  <div class="sub">RO plants, PET blowing, filling &amp; capping, labelling, coding and shrink packaging &mdash; individual machines or a fully integrated turnkey line.</div>
+  {hero}
+  <div class="statrow">{stats}</div>
+  <div class="cover-foot"><div><b>{COMPANY['name']}</b> &nbsp;&middot;&nbsp; {COMPANY['tag']}</div><div>{COMPANY['phone']} &nbsp;&middot;&nbsp; {COMPANY['web']}</div></div>
 </div></div>"""
 
 
 def _intro():
     stats = "".join(f'<div class="s"><b>{a}</b><span>{b}</span></div>' for a, b in STATS)
-    tl = "".join(f'<div class="n"><div class="num">{n}</div><b>{t}</b></div>' for n, t in PROCESS)
+    flow = "".join(f'<div class="n"><div class="dot">{n}</div><b>{t}</b></div>' for n, t in PROCESS)
     return f"""
-<section class="pb">
-  <div class="kick">Company Profile</div>
-  <p class="lead-serif" style="margin-top:5mm">We build <em>world-class</em> machinery for the water,
-  beverage and packaging industry &mdash; helping you produce more, reliably, with one accountable
-  partner from plant design through installation and after-sales support.</p>
-  <div class="stat-row">{stats}</div>
-  <hr class="hr">
-  <div class="kick">The Production Flow</div>
-  <div class="tl">{tl}</div>
-</section>"""
+<div class="page pb"><div class="tex1"></div><div class="tex2"></div><div class="z">
+  <div class="tophead">{_wm()}<span class="type"><b>ABOUT</b><span>COMPANY PROFILE</span></span></div>
+  <div style="margin-top:12mm"><div class="kick">One Partner, The Complete Line</div>
+  <h2 class="big-title">Machinery That Helps<br>You Produce More</h2><div class="bar"></div></div>
+  <p class="lead-big">Bharat iON Systems manufactures <em>world-class</em> machinery for the water,
+  beverage and packaging industry &mdash; from RO purification to blowing, filling, labelling, coding
+  and shrink packaging, backed end-to-end by one accountable team.</p>
+  <div class="statrow2">{stats}</div>
+  <div style="margin-top:12mm"><div class="kick">The Production Flow</div></div>
+  <div class="flowrow">{flow}</div>
+  <div class="desc"><p>Individual machines or a fully integrated turnkey line \u2014 supplied, installed, trained and supported across India.</p><span class="web">{COMPANY['web']}</span></div>
+</div></div>"""
 
 
 def _divider(num, kicker, title, sub):
     return f"""
-<div class="divider"><div class="divider-wrap">
-  <div class="bg">{num}</div>
+<div class="page pb"><div class="tex1"></div><div class="tex2"></div><div class="divnum">{num}</div>
+<div class="z" style="justify-content:center">
   <div class="kick">{kicker}</div>
-  <h2>{title}</h2>
-  <div class="r"></div>
-  <p>{sub}</p>
+  <h2 class="big-title" style="font-size:44pt">{title}</h2>
+  <div class="bar"></div>
+  <p class="lead-big" style="font-weight:500;font-size:13pt;color:#cfe0f5">{sub}</p>
 </div></div>"""
+
+
+def _accent_title(name):
+    parts = name.split(" ", 1)
+    if len(parts) == 2:
+        return f'<em>{parts[0]}</em> {parts[1]}'
+    return name
 
 
 def _product(idx, p):
     ex = EXTRA.get(p["key"], {})
     model = ex.get("model", "")
-    model_html = f'<span class="model"><b>MODEL</b>{model}</span>' if model else ''
-    badges = "".join(
-        f'<div class="badge"><div class="bv">{v}{f"<span>{u}</span>" if u else ""}</div><div class="bl">{l}</div></div>'
+    stats = "".join(
+        f'<div class="stat"><div class="v">{v}{f"<span>{u}</span>" if u else ""}</div><div class="l">{l}</div><div class="ln"></div></div>'
         for v, u, l in ex.get("badges", []))
-    chips = "".join(f'<div class="fchip">{icon(ic)}<span>{lab}</span></div>' for ic, lab in ex.get("features", []))
-    specs = "".join(f'<tr><td class="k">{k}</td><td class="v">{v}</td></tr>' for k, v in p["specs"])
-    feats = "".join(f'<li>{h}</li>' for h in p["hl"])
+    feats = "".join(f'<div class="feat"><div class="ic">{icon(ic)}</div><span>{lab}</span></div>' for ic, lab in ex.get("features", []))
+    sp = p["specs"]
+    half = (len(sp) + 1) // 2
+
+    def tbl(rows):
+        return '<table class="spec">' + "".join(f'<tr><td class="k">{k}</td><td class="v">{v}</td></tr>' for k, v in rows) + '</table>'
     return f"""
-<section class="pb prod">
-  <div class="bignum">{idx:02d}</div>
-  <div class="phead"><div class="kick">{p['cat']}</div>{model_html}</div>
-  <h2>{p['name']}</h2>
-  <div class="lead">{p['lead']}</div>
-  <div class="frame">{_visual(p['key'])}</div>
-  <div class="badges">{badges}</div>
-  <div class="pmeta">
-    <div class="col"><div class="lbl">Specifications</div><table class="spec">{specs}</table></div>
-    <div class="col"><div class="lbl">Highlights</div><ul class="hl">{feats}</ul></div>
+<div class="page pb"><div class="tex1"></div><div class="tex2"></div><div class="z">
+  <div class="tophead">{_wm()}<span class="type"><b>TYPE</b><span>{model}</span></span></div>
+  <div style="margin-top:9mm"><div class="kick">{p['cat']}</div>
+  <h1 class="ptitle">{_accent_title(p['name'])}</h1></div>
+  <div class="hero">
+    <div class="left">{stats}</div>
+    <div class="right"><div class="photocard">{_visual(p['key'])}</div></div>
   </div>
-  <div class="fchips">{chips}</div>
-</section>"""
+  <div class="feats">{feats}</div>
+  <div class="specrow"><div class="specpanel"><div class="lbl">Technical Specifications</div>
+    <div class="spec2"><div>{tbl(sp[:half])}</div><div>{tbl(sp[half:])}</div></div></div></div>
+  <div class="desc"><p>{p['lead']}</p><span class="web">{COMPANY['web']}</span></div>
+</div></div>"""
 
 
 def _applications():
-    items = "".join(f'<div class="a"><span class="no">{i+1:02d}</span><span class="t">{a}</span></div>'
-                    for i, a in enumerate(APPLICATIONS))
+    items = "".join(f'<div class="a">{a}</div>' for a in APPLICATIONS)
     return f"""
-<section class="pb">
-  <div class="kick">Where It Is Used</div>
-  <h2 style="font-size:30pt;margin:3mm 0">Applications &amp; Industries</h2>
-  <div class="applist">{items}</div>
-</section>"""
+<div class="page pb"><div class="tex1"></div><div class="tex2"></div><div class="z">
+  <div class="tophead">{_wm()}<span class="type"><b>USE</b><span>APPLICATIONS</span></span></div>
+  <div style="margin-top:12mm"><div class="kick">Where It Is Used</div>
+  <h2 class="big-title">Applications &amp; Industries</h2><div class="bar"></div></div>
+  <div class="applist2">{items}</div>
+  <div class="desc"><p>Our machinery powers packaging lines across a wide range of liquids and businesses.</p><span class="web">{COMPANY['web']}</span></div>
+</div></div>"""
 
 
 def _why():
-    ws = "".join(f'<div class="w"><div class="no">{i+1:02d}</div><div><h4>{t}</h4><p>{d}</p></div></div>'
-                 for i, (t, d) in enumerate(WHY))
+    tiles = "".join(f'<div class="t"><div class="no">{i+1:02d}</div><div><h4>{t}</h4><p>{d}</p></div></div>'
+                    for i, (t, d) in enumerate(WHY))
     return f"""
-<section class="pb">
-  <div class="kick">Why Bharat iON</div>
-  <h2 style="font-size:30pt;margin:3mm 0">Built Around Your Success</h2>
-  <div class="why">{ws}</div>
-</section>"""
+<div class="page pb"><div class="tex1"></div><div class="tex2"></div><div class="z">
+  <div class="tophead">{_wm()}<span class="type"><b>WHY</b><span>BHARAT iON</span></span></div>
+  <div style="margin-top:12mm"><div class="kick">Why Choose Us</div>
+  <h2 class="big-title">Built Around Your Success</h2><div class="bar"></div></div>
+  <div class="tiles">{tiles}</div>
+</div></div>"""
 
 
 def _back():
-    qr = _qr_data_uri("https://bharationsystems.com")
+    qr = _qr("https://bharationsystems.com")
     qr_html = f'<div class="qr"><img src="{qr}" alt=""><span>bharationsystems.com</span></div>' if qr else ''
     return f"""
-<div class="back"><div class="back-wrap">
-  <div class="wm">BHARAT <em>iON</em> SYSTEMS</div>
-  <div class="k">Let's Talk</div>
-  <h2>Let us build your <em>bottling plant</em>.</h2>
-  <div class="p">Share your target capacity and city &mdash; we will prepare a tailored machine list and
-  budget, then supply, install and support the complete line, end to end.</div>
+<div class="page pb back"><div class="tex1"></div><div class="tex2"></div><div class="z">
+  {_wm()}
+  <div style="margin-top:14mm"><div class="kick">Let's Talk</div>
+  <h2>Let us build your <em>bottling plant</em>.</h2></div>
+  <div class="p">Share your target capacity and city &mdash; we'll prepare a tailored machine list and budget, then supply, install and support the complete line, end to end.</div>
   <div><span class="back-cta">Get a Free Quote &amp; Plant Plan</span></div>
   <div class="back-contact">
     <div class="info">
       <div><b>{COMPANY['name']}</b></div>
-      <div>T &nbsp; {COMPANY['phone']}</div>
-      <div>E &nbsp; {COMPANY['email']}</div>
-      <div>W &nbsp; {COMPANY['web']}</div>
-      <div style="max-width:95mm">A &nbsp; {COMPANY['addr']}</div>
+      <div>&#9742;&nbsp; {COMPANY['phone']}</div>
+      <div>&#9993;&nbsp; {COMPANY['email']}</div>
+      <div>&#9737;&nbsp; {COMPANY['web']}</div>
+      <div style="max-width:95mm">&#9741;&nbsp; {COMPANY['addr']}</div>
     </div>
     {qr_html}
   </div>
@@ -457,7 +429,7 @@ def _back():
 
 def build_html():
     parts = [_cover(), _intro(),
-             _divider("01", "Machinery Range", "Our Machinery,\nIn Detail".replace("\n", "<br>"),
+             _divider("01", "Machinery Range", "Our Machinery, In Detail",
                       "Nine core machines that together form a complete packaged-water and beverage line.")]
     parts += [_product(i + 1, p) for i, p in enumerate(PRODUCTS)]
     parts += [_applications(), _why(), _back()]
