@@ -283,6 +283,7 @@ SVGS = {
     "semi": sv_semi_blow, "handblow": sv_hand_blow, "full": sv_full_blow,
     "ro": sv_ro, "station": sv_station, "fill": sv_filling,
     "label": sv_label, "shrink": sv_shrink, "ink": sv_inkjet,
+    "nozfill4": sv_station, "rfc4": sv_filling,
 }
 
 # name, category, svg-key  (the 9 machines, same as the website)
@@ -296,4 +297,6 @@ PRODUCT_RANGE = [
     ("Automatic Sticker Labelling Machine", "Labelling", "label"),
     ("Automatic Shrink Wrapping Machine", "Secondary Packaging", "shrink"),
     ("Batch Coding Machine", "Coding & Marking", "ink"),
+    ("4-Nozzle Semi-Automatic Filler", "Filling & Capping", "nozfill4"),
+    ("Semi-Automatic RFC Filling 4-Head Machine", "Filling & Capping", "rfc4"),
 ]

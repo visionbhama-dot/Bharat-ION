@@ -70,7 +70,9 @@ window.ADMIN_CONFIG = {
     { slug: "fully-automatic-rinsing-filling-capping-machine", name: "Fully Automatic Rinsing, Filling & Capping Machine" },
     { slug: "automatic-sticker-labelling-machine",            name: "Automatic Sticker Labelling Machine" },
     { slug: "automatic-shrink-wrapping-machine",              name: "Automatic Shrink Wrapping Machine" },
-    { slug: "batch-coding-machine",                           name: "Batch Coding Machine" }
+    { slug: "batch-coding-machine",                           name: "Batch Coding Machine" },
+    { slug: "4-nozzle-semi-filler",                           name: "4-Nozzle Semi-Automatic Filler" },
+    { slug: "semi-rfc-filling-4-head-machine",                name: "Semi-Automatic RFC Filling 4-Head Machine" }
   ],
 
   blogCategories: ["Business Guide", "Technical", "Buying Guide", "News"]
