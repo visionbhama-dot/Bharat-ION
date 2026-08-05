@@ -43,12 +43,11 @@ body { margin:0; font-family:'Inter',sans-serif; color:#16232B; }
 .wm { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:135mm; opacity:.05; }
 .wm img { width:100%; }
 /* header */
-.head { position:absolute; top:15mm; left:16mm; right:14mm; display:flex; justify-content:space-between; align-items:flex-start; }
-.head .lg { height:17mm; width:auto; }
-.head .brand b { display:block; font-family:'Poppins'; font-weight:800; font-size:14pt; color:#08214E; }
-.head .brand span { font-size:8pt; color:#5C6E7A; letter-spacing:.4px; }
-.head .hc { text-align:right; font-size:8.5pt; color:#3a496a; line-height:1.7; }
-.head .hc b { color:#08214E; }
+.head { position:absolute; top:14mm; left:16mm; right:14mm; display:flex; justify-content:space-between; align-items:center; }
+.head .lg { height:20mm; width:auto; }
+.head .hc { text-align:right; font-size:9pt; color:#3a496a; line-height:1.8; }
+.head .hc b { color:#08214E; font-family:'Poppins'; }
+.head .hc .t { font-size:7.5pt; color:#8593ab; letter-spacing:.5px; text-transform:uppercase; }
 .rule { position:absolute; left:16mm; right:14mm; height:3px; border-radius:2px; background:linear-gradient(90deg,#24A24B,#1656C4 45%,#08214E 75%,#E23127); }
 .rule.top { top:35mm; }
 /* footer */
@@ -71,9 +70,7 @@ def build_html():
   <div class="corner tr"></div><div class="corner bl"></div>
   {wm}
   <div class="head">
-    <div style="display:flex;align-items:center;gap:5mm">{lg}
-      <div class="brand"><b>{CO['name']}</b><span>{CO['tag']}</span></div>
-    </div>
+    {lg}
     <div class="hc"><b>{CO['phone']}</b><br>{CO['email']}<br>{CO['web']}</div>
   </div>
   <div class="rule top"></div>
