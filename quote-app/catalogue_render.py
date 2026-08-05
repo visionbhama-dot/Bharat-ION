@@ -201,6 +201,8 @@ h1,h2,h3 { font-family:'Poppins',sans-serif; margin:0; line-height:1.05; }
 .wm { font-family:'Poppins'; font-weight:800; font-size:12pt; letter-spacing:.5px; color:#fff; }
 .wm em { color:#7FE0A0; font-style:normal; }
 .wm small { display:block; font-family:'Inter'; font-weight:500; font-size:7pt; letter-spacing:2px; color:#9DC4FF; text-transform:uppercase; }
+.wmlogo { background:#fff; border-radius:10px; padding:2.5mm 4mm; display:inline-block; box-shadow:0 6px 16px rgba(0,0,0,.18); }
+.wmlogo img { height:10mm; width:auto; display:block; }
 .tophead { display:flex; justify-content:space-between; align-items:center; }
 .type { display:inline-flex; align-items:stretch; border-radius:30px; overflow:hidden; font-family:'Poppins'; font-weight:700; font-size:8.5pt; border:1px solid rgba(255,255,255,.35); }
 .type b { background:#fff; color:#08214E; padding:2.4mm 5mm; letter-spacing:1px; }
@@ -227,9 +229,9 @@ h1,h2,h3 { font-family:'Poppins',sans-serif; margin:0; line-height:1.05; }
 .stat .ln { width:14mm; height:3px; background:#7FE0A0; border-radius:2px; margin-top:4mm; }
 
 .feats { display:flex; gap:4mm; margin-top:5mm; align-items:stretch; }
-.feat { flex:1; background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.2); border-radius:13px; padding:4mm 2.5mm; text-align:center; overflow:hidden; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; }
-.feat .ic { width:10mm; height:10mm; border-radius:50%; background:rgba(143,190,255,.18); color:#8FBEFF; display:flex; align-items:center; justify-content:center; margin:0 auto 2.5mm; flex:none; }
-.feat .ic svg { width:5mm; height:5mm; }
+.feat { flex:1; background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.2); border-radius:13px; padding:5mm 3mm; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:28mm; }
+.feat .ic { width:9mm; height:9mm; border-radius:50%; background:rgba(143,190,255,.20); color:#9FC6FF; display:flex; align-items:center; justify-content:center; margin:0 0 3mm; flex:none; }
+.feat .ic svg { width:4.6mm; height:4.6mm; }
 .feat span { font-size:7.4pt; font-weight:600; color:#eaf1ff; line-height:1.25; }
 
 .specrow { display:flex; gap:7mm; margin-top:5mm; }
@@ -299,6 +301,9 @@ h1,h2,h3 { font-family:'Poppins',sans-serif; margin:0; line-height:1.05; }
 
 
 def _wm():
+    logo = _logo()
+    if logo:
+        return f'<div class="wmlogo"><img src="{_fileuri(logo)}" alt="Bharat iON Systems"></div>'
     return '<div class="wm">BHARAT <em>iON</em> SYSTEMS<small>Water &amp; Packaging Machinery</small></div>'
 
 
