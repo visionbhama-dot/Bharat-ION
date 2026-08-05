@@ -191,12 +191,12 @@ CSS = """
 body { margin:0; font-family:'Inter',sans-serif; color:#fff; }
 h1,h2,h3 { font-family:'Poppins',sans-serif; margin:0; line-height:1.05; }
 @page { size:A4; margin:0; }
-.page { position:relative; width:210mm; height:297mm; overflow:hidden; padding:15mm 15mm 13mm;
+.page { position:relative; width:210mm; height:297mm; overflow:hidden; padding:15mm 15mm 13mm; display:flex; flex-direction:column;
   background:linear-gradient(140deg,#071B44 0%,#0C336F 55%,#123E86 120%); color:#fff; }
 .pb { page-break-before:always; }
 .tex1 { position:absolute; top:-55mm; right:-45mm; width:170mm; height:170mm; background:rgba(255,255,255,.05); border-radius:34mm; transform:rotate(22deg); }
 .tex2 { position:absolute; bottom:-60mm; left:-45mm; width:150mm; height:150mm; border-radius:50%; background:rgba(46,116,232,.20); }
-.z { position:relative; z-index:2; height:100%; display:flex; flex-direction:column; }
+.z { position:relative; z-index:2; flex:1; display:flex; flex-direction:column; }
 
 .wm { font-family:'Poppins'; font-weight:800; font-size:12pt; letter-spacing:.5px; color:#fff; }
 .wm em { color:#7FE0A0; font-style:normal; }
@@ -207,14 +207,14 @@ h1,h2,h3 { font-family:'Poppins',sans-serif; margin:0; line-height:1.05; }
 .type span { padding:2.4mm 6mm; color:#fff; letter-spacing:1.5px; }
 
 .kick { font-family:'Poppins'; font-weight:700; letter-spacing:3px; font-size:8.5pt; text-transform:uppercase; color:#7FE0A0; }
-.ptitle { font-family:'Poppins'; font-weight:900; font-size:30pt; color:#fff; letter-spacing:-.5px; margin:3mm 0 0; max-width:120mm; }
+.ptitle { font-family:'Poppins'; font-weight:900; font-size:25pt; color:#fff; letter-spacing:-.5px; margin:3mm 0 0; max-width:150mm; }
 .ptitle em { color:#8FBEFF; font-style:normal; }
 .tagline { display:inline-block; margin-top:4mm; background:linear-gradient(90deg,rgba(255,255,255,.16),rgba(255,255,255,0)); border-left:3px solid #7FE0A0; padding:2.2mm 6mm; font-size:8.5pt; letter-spacing:2px; text-transform:uppercase; color:#dfeaff; }
 
-.hero { display:flex; gap:8mm; margin-top:8mm; align-items:stretch; }
+.hero { display:flex; gap:7mm; margin-top:6mm; align-items:stretch; }
 .hero .left { width:44%; display:flex; flex-direction:column; gap:5mm; }
 .hero .right { flex:1; }
-.photocard { background:#fff; border-radius:16px; padding:6mm; height:96mm; display:flex; align-items:center; justify-content:center;
+.photocard { background:#fff; border-radius:16px; padding:5mm; height:80mm; display:flex; align-items:center; justify-content:center;
   box-shadow:0 12px 30px rgba(0,0,0,.28); }
 .photocard img { max-width:100%; max-height:100%; object-fit:contain; }
 .photocard svg { width:100%; height:100%; }
@@ -226,14 +226,14 @@ h1,h2,h3 { font-family:'Poppins',sans-serif; margin:0; line-height:1.05; }
 .stat .l { font-size:8pt; letter-spacing:2px; text-transform:uppercase; color:#Bcd5f7; margin-top:3mm; }
 .stat .ln { width:14mm; height:3px; background:#7FE0A0; border-radius:2px; margin-top:4mm; }
 
-.feats { display:flex; gap:4mm; margin-top:7mm; }
-.feat { flex:1; background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.2); border-radius:13px; padding:4mm 3mm; text-align:center; }
-.feat .ic { width:11mm; height:11mm; border-radius:50%; background:rgba(143,190,255,.18); color:#8FBEFF; display:flex; align-items:center; justify-content:center; margin:0 auto 2.5mm; }
-.feat .ic svg { width:6mm; height:6mm; }
-.feat span { font-size:8pt; font-weight:600; color:#eaf1ff; line-height:1.2; }
+.feats { display:flex; gap:4mm; margin-top:5mm; align-items:stretch; }
+.feat { flex:1; background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.2); border-radius:13px; padding:4mm 2.5mm; text-align:center; overflow:hidden; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; }
+.feat .ic { width:10mm; height:10mm; border-radius:50%; background:rgba(143,190,255,.18); color:#8FBEFF; display:flex; align-items:center; justify-content:center; margin:0 auto 2.5mm; flex:none; }
+.feat .ic svg { width:5mm; height:5mm; }
+.feat span { font-size:7.4pt; font-weight:600; color:#eaf1ff; line-height:1.25; }
 
-.specrow { display:flex; gap:7mm; margin-top:7mm; }
-.specpanel { flex:1; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.16); border-radius:13px; padding:5mm 6mm; }
+.specrow { display:flex; gap:7mm; margin-top:5mm; }
+.specpanel { flex:1; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.16); border-radius:13px; padding:4.5mm 5mm; }
 .specpanel .lbl { font-family:'Poppins'; font-weight:700; font-size:8pt; letter-spacing:2px; text-transform:uppercase; color:#7FE0A0; margin-bottom:3mm; }
 .spec2 { display:flex; gap:8mm; }
 .spec2 > div { flex:1; }
@@ -242,11 +242,11 @@ h1,h2,h3 { font-family:'Poppins',sans-serif; margin:0; line-height:1.05; }
 .spec td.k { color:#Aec3e8; }
 .spec td.v { text-align:right; font-weight:700; color:#fff; }
 .desc { margin-top:auto; padding-top:6mm; display:flex; justify-content:space-between; align-items:flex-end; gap:10mm; }
-.desc p { font-size:9pt; color:#c8d7ef; max-width:120mm; line-height:1.55; margin:0; }
+.desc p { font-size:8.4pt; color:#c8d7ef; max-width:120mm; line-height:1.5; margin:0; }
 .desc .web { font-family:'Poppins'; font-weight:700; font-size:8pt; color:#7FE0A0; white-space:nowrap; }
 
 /* ---------- COVER ---------- */
-.cover-hero { margin-top:7mm; height:110mm; border-radius:16px; overflow:hidden; box-shadow:0 16px 40px rgba(0,0,0,.35); border:1px solid rgba(255,255,255,.2); }
+.cover-hero { margin-top:7mm; flex:1; min-height:95mm; border-radius:16px; overflow:hidden; box-shadow:0 16px 40px rgba(0,0,0,.35); border:1px solid rgba(255,255,255,.2); }
 .cover-hero img { width:100%; height:100%; object-fit:cover; display:block; }
 .cover h1 { font-family:'Poppins'; font-weight:900; font-size:40pt; letter-spacing:-1px; margin-top:6mm; max-width:175mm; }
 .cover h1 em { color:#8FBEFF; font-style:normal; }
@@ -263,13 +263,14 @@ h1,h2,h3 { font-family:'Poppins',sans-serif; margin:0; line-height:1.05; }
 .bar { width:24mm; height:4px; background:#7FE0A0; border-radius:3px; margin:4mm 0 7mm; }
 .lead-big { font-family:'Poppins'; font-weight:700; font-size:17pt; line-height:1.35; max-width:160mm; }
 .lead-big em { color:#8FBEFF; font-style:normal; }
-.tiles { display:flex; flex-wrap:wrap; gap:5mm; margin-top:8mm; }
-.tiles .t { width:calc(50% - 2.5mm); background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18); border-radius:13px; padding:6mm; display:flex; gap:5mm; align-items:flex-start; }
-.tiles .t .no { font-family:'Poppins'; font-weight:900; font-size:18pt; color:#8FBEFF; width:12mm; }
-.tiles .t h4 { font-family:'Poppins'; font-weight:700; font-size:11.5pt; color:#fff; }
-.tiles .t p { font-size:8.8pt; color:#c2d3ee; margin:1.5mm 0 0; }
-.applist2 { display:flex; flex-wrap:wrap; gap:5mm; margin-top:8mm; }
-.applist2 .a { width:calc(50% - 2.5mm); background:rgba(255,255,255,.08); border-left:4px solid #7FE0A0; border-radius:10px; padding:5mm 6mm; font-family:'Poppins'; font-weight:600; font-size:12pt; }
+.tiles { margin-top:8mm; }
+.trow { display:flex; gap:5mm; margin-bottom:5mm; align-items:stretch; }
+.tiles .t { flex:1; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18); border-radius:13px; padding:5.5mm 6mm 6.5mm; display:flex; gap:4mm; align-items:flex-start; }
+.tiles .t .no { font-family:'Poppins'; font-weight:900; font-size:17pt; color:#8FBEFF; width:11mm; flex:none; }
+.tiles .t h4 { font-family:'Poppins'; font-weight:700; font-size:10.5pt; color:#fff; line-height:1.2; }
+.tiles .t p { font-size:8.2pt; color:#c2d3ee; margin:1.5mm 0 0; line-height:1.45; }
+.applist2 { margin-top:8mm; }
+.applist2 .a { flex:1; background:rgba(255,255,255,.08); border-left:4px solid #7FE0A0; border-radius:10px; padding:5mm 6mm; font-family:'Poppins'; font-weight:600; font-size:12pt; }
 .flowrow { display:flex; justify-content:space-between; margin-top:9mm; }
 .flowrow .n { text-align:center; width:15%; }
 .flowrow .dot { width:15mm; height:15mm; border-radius:50%; background:linear-gradient(160deg,#1C61D6,#1147A8); border:2px solid rgba(255,255,255,.35);
@@ -311,7 +312,6 @@ def _cover():
   <h1>Complete <em>Water Bottling</em><br>&amp; Packaging Machinery</h1>
   <div class="sub">RO plants, PET blowing, filling &amp; capping, labelling, coding and shrink packaging &mdash; individual machines or a fully integrated turnkey line.</div>
   {hero}
-  <div class="statrow">{stats}</div>
   <div class="cover-foot"><div><b>{COMPANY['name']}</b> &nbsp;&middot;&nbsp; {COMPANY['tag']}</div><div>{COMPANY['phone']} &nbsp;&middot;&nbsp; {COMPANY['web']}</div></div>
 </div></div>"""
 
@@ -380,27 +380,38 @@ def _product(idx, p):
 </div></div>"""
 
 
+def _pairs(items):
+    return [items[i:i + 2] for i in range(0, len(items), 2)]
+
+
 def _applications():
-    items = "".join(f'<div class="a">{a}</div>' for a in APPLICATIONS)
+    rows = ""
+    for pair in _pairs(APPLICATIONS):
+        rows += '<div class="trow">' + "".join(f'<div class="a">{a}</div>' for a in pair) + '</div>'
     return f"""
 <div class="page pb"><div class="tex1"></div><div class="tex2"></div><div class="z">
   <div class="tophead">{_wm()}<span class="type"><b>USE</b><span>APPLICATIONS</span></span></div>
   <div style="margin-top:12mm"><div class="kick">Where It Is Used</div>
   <h2 class="big-title">Applications &amp; Industries</h2><div class="bar"></div></div>
-  <div class="applist2">{items}</div>
+  <div class="applist2">{rows}</div>
   <div class="desc"><p>Our machinery powers packaging lines across a wide range of liquids and businesses.</p><span class="web">{COMPANY['web']}</span></div>
 </div></div>"""
 
 
 def _why():
-    tiles = "".join(f'<div class="t"><div class="no">{i+1:02d}</div><div><h4>{t}</h4><p>{d}</p></div></div>'
-                    for i, (t, d) in enumerate(WHY))
+    rows, n = "", 0
+    for pair in _pairs(WHY):
+        cells = ""
+        for t, d in pair:
+            n += 1
+            cells += f'<div class="t"><div class="no">{n:02d}</div><div><h4>{t}</h4><p>{d}</p></div></div>'
+        rows += f'<div class="trow">{cells}</div>'
     return f"""
 <div class="page pb"><div class="tex1"></div><div class="tex2"></div><div class="z">
   <div class="tophead">{_wm()}<span class="type"><b>WHY</b><span>BHARAT iON</span></span></div>
   <div style="margin-top:12mm"><div class="kick">Why Choose Us</div>
   <h2 class="big-title">Built Around Your Success</h2><div class="bar"></div></div>
-  <div class="tiles">{tiles}</div>
+  <div class="tiles">{rows}</div>
 </div></div>"""
 
 
