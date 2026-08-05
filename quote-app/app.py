@@ -272,6 +272,27 @@ def catalogue():
                      download_name="Bharat-iON-Systems-Catalogue.pdf")
 
 
+@app.route("/company-profile")
+def company_profile():
+    import profile_render as pr
+    return send_file(_bio(pr.render_pdf()), mimetype="application/pdf", as_attachment=True,
+                     download_name="Bharat-iON-Systems-Company-Profile.pdf")
+
+
+@app.route("/letterhead")
+def letterhead():
+    import letterhead_render as lh
+    return send_file(_bio(lh.render_pdf()), mimetype="application/pdf", as_attachment=True,
+                     download_name="Bharat-iON-Systems-Letterhead.pdf")
+
+
+@app.route("/visiting-card")
+def visiting_card():
+    import visiting_card_render as vc
+    return send_file(_bio(vc.render_pdf()), mimetype="application/pdf", as_attachment=True,
+                     download_name="Bharat-iON-Systems-Visiting-Card.pdf")
+
+
 @app.route("/preview", methods=["POST"])
 def preview():
     data = _build_data_from_form()

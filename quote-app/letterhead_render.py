@@ -1,0 +1,98 @@
+#!/usr/bin/env python3
+"""Bharat iON Systems - professional A4 letterhead (with watermark)."""
+import os
+from weasyprint import HTML
+
+BASE = os.path.dirname(os.path.abspath(__file__))
+ASSETS = os.path.join(BASE, "assets")
+
+
+def _fileuri(p):
+    return "file://" + os.path.abspath(p) if p and os.path.exists(p) else ""
+
+
+def _logo():
+    for e in (".png", ".svg", ".jpg", ".jpeg", ".webp"):
+        p = os.path.join(ASSETS, "logo" + e)
+        if os.path.exists(p):
+            return p
+    return None
+
+
+CO = {
+    "name": "Bharat iON Systems Pvt. Ltd.",
+    "tag": "Water Treatment &amp; Bottle Packaging Machinery",
+    "phone": "+91 83840 61695", "email": "info@bharationsystems.com",
+    "web": "www.bharationsystems.com", "gstin": "[GSTIN to be added]",
+    "addr": "2882, 1st Floor, Karheda, Ghaziabad, Uttar Pradesh 201007",
+}
+
+CSS = """
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap');
+@page { size:A4; margin:0; }
+* { box-sizing:border-box; }
+body { margin:0; font-family:'Inter',sans-serif; color:#16232B; }
+.sheet { position:relative; width:210mm; height:297mm; overflow:hidden; background:#fff; }
+/* left brand stripe */
+.stripe { position:absolute; left:0; top:0; bottom:0; width:6mm; background:linear-gradient(180deg,#08214E,#1656C4 55%,#24A24B); }
+/* soft corner accents */
+.corner { position:absolute; width:70mm; height:70mm; }
+.corner.tr { top:-35mm; right:-35mm; background:radial-gradient(circle at center, rgba(22,86,196,.10), transparent 70%); }
+.corner.bl { bottom:-30mm; left:-20mm; background:radial-gradient(circle at center, rgba(36,162,75,.10), transparent 70%); }
+/* watermark */
+.wm { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:135mm; opacity:.05; }
+.wm img { width:100%; }
+/* header */
+.head { position:absolute; top:15mm; left:16mm; right:14mm; display:flex; justify-content:space-between; align-items:flex-start; }
+.head .lg { height:17mm; width:auto; }
+.head .brand b { display:block; font-family:'Poppins'; font-weight:800; font-size:14pt; color:#08214E; }
+.head .brand span { font-size:8pt; color:#5C6E7A; letter-spacing:.4px; }
+.head .hc { text-align:right; font-size:8.5pt; color:#3a496a; line-height:1.7; }
+.head .hc b { color:#08214E; }
+.rule { position:absolute; left:16mm; right:14mm; height:3px; border-radius:2px; background:linear-gradient(90deg,#24A24B,#1656C4 45%,#08214E 75%,#E23127); }
+.rule.top { top:35mm; }
+/* footer */
+.foot { position:absolute; left:16mm; right:14mm; bottom:14mm; }
+.foot .r2 { height:2px; background:linear-gradient(90deg,#E23127,#08214E 30%,#1656C4 65%,#24A24B); border-radius:2px; margin-bottom:4mm; }
+.foot .row { display:flex; justify-content:space-between; align-items:center; font-size:8pt; color:#5C6E7A; }
+.foot .row .l b { color:#08214E; font-family:'Poppins'; }
+.foot .tags { text-align:right; line-height:1.6; }
+.foot .tags b { color:#08214E; }
+"""
+
+
+def build_html():
+    logo = _logo()
+    lg = f'<img class="lg" src="{_fileuri(logo)}" alt="">' if logo else ''
+    wm = f'<div class="wm"><img src="{_fileuri(logo)}" alt=""></div>' if logo else ''
+    return f"""<!DOCTYPE html><html><head><meta charset='utf-8'><style>{CSS}</style></head><body>
+<div class="sheet">
+  <div class="stripe"></div>
+  <div class="corner tr"></div><div class="corner bl"></div>
+  {wm}
+  <div class="head">
+    <div style="display:flex;align-items:center;gap:5mm">{lg}
+      <div class="brand"><b>{CO['name']}</b><span>{CO['tag']}</span></div>
+    </div>
+    <div class="hc"><b>{CO['phone']}</b><br>{CO['email']}<br>{CO['web']}</div>
+  </div>
+  <div class="rule top"></div>
+  <div class="foot">
+    <div class="r2"></div>
+    <div class="row">
+      <div class="l"><b>{CO['name']}</b><br>{CO['addr']}</div>
+      <div class="tags"><b>GSTIN:</b> {CO['gstin']}<br>{CO['web']}</div>
+    </div>
+  </div>
+</div></body></html>"""
+
+
+def render_pdf():
+    return HTML(string=build_html(), base_url=BASE).write_pdf()
+
+
+if __name__ == "__main__":
+    out = os.path.abspath(os.path.join(BASE, "..", "assets", "letterhead.pdf"))
+    with open(out, "wb") as f:
+        f.write(render_pdf())
+    print("wrote", out, os.path.getsize(out) // 1024, "KB")
